@@ -34,15 +34,20 @@ public class FuncionarioLoader implements ApplicationRunner {
 			
 			campos = linha.split(";");
 			
-			Endereco endereco = new Endereco();			
-			endereco.setCep("38180000");
-			endereco.setLocalidade("Minas gerais");
 			
 			Funcionario funcionario = new Funcionario();				
 			funcionario.setNome(campos[0]);
 			funcionario.setMatricula(Integer.valueOf(campos[1]));
 			funcionario.setSalario(Double.valueOf(campos[2]));
 			funcionario.setEhAtivo(Boolean.valueOf(campos[3]));
+
+			funcionario.setCpf(campos[4]);
+			funcionario.setEmail(campos[5]);
+			funcionario.setTelefone(campos[6]);
+
+			Endereco endereco = new Endereco();			
+			endereco.setCep(campos[7]);
+			endereco.setLocalidade(campos[8]);
 			
 			funcionario.setEndereco(endereco);
 			
@@ -53,7 +58,7 @@ public class FuncionarioLoader implements ApplicationRunner {
 			linha = leitura.readLine();
 		}
 		
-		System.out.println("- " + funcionarioService.obterLista().size());
+		System.out.println("- Total: " + funcionarioService.obterLista().size());
 
 		leitura.close();
 	}

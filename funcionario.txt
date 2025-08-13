@@ -1,3 +1,4 @@
-Adriel Cochito;123;5000;true
-Maria;234;9999;false
-Joao;345;888;true
+Adriel Cochito;123;5000;true;34996699969;cochito@gmail.com;12312312312;12345678;Minas Gerais
+Mariana Lopes;456;7500;false;21987654321;mariana.lopes@gmail.com;98765432100;87654321;São Paulo
+Carlos Henrique;789;6200;true;31999887766;carlos.henrique@gmail.com;12398745609;23456789;Rio de Janeiro
+Fernanda Silva;321;5400;false;47995544332;fernanda.silva@gmail.com;32165498701;34567890;Bahia

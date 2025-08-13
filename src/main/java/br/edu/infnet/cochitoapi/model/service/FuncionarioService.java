@@ -8,8 +8,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
 
-import br.edu.infnet.cochitoapi.model.domain.Endereco;
 import br.edu.infnet.cochitoapi.model.domain.Funcionario;
+import br.edu.infnet.cochitoapi.model.domain.exceptions.FuncionarioInvalidoException;
 
 @Service
 public class FuncionarioService implements CrudService<Funcionario, Integer> {
@@ -20,29 +20,16 @@ public class FuncionarioService implements CrudService<Funcionario, Integer> {
 	@Override
 	public Funcionario salvar(Funcionario funcionario) {
 		
-		funcionario.setId(nextId.getAndIncrement());
+		if(funcionario.getNome() == null) {
+			throw new FuncionarioInvalidoException("O nome do funcionario é uma informação obrigatória!");
+		}
 		
+		funcionario.setId(nextId.getAndIncrement());
 		mapa.put(funcionario.getId(), funcionario);
 		
 		return funcionario;
 	}
 
-	@Override
-	public Funcionario obter() {
-		Endereco endereco = new Endereco();			
-		endereco.setCep("38180000");
-		endereco.setLocalidade("Minas Gerais");
-
-		Funcionario vendedor = new Funcionario();				
-		vendedor.setNome("Adriel Cochito");
-		vendedor.setMatricula(123);
-		vendedor.setSalario(5000);
-		vendedor.setEhAtivo(true);
-		
-		vendedor.setEndereco(endereco);
-
-		return vendedor;
-	}
 
 	@Override
 	public void excluir(Integer id) {
@@ -53,5 +40,17 @@ public class FuncionarioService implements CrudService<Funcionario, Integer> {
 	public List<Funcionario> obterLista() {
 		
 		return new ArrayList<Funcionario>(mapa.values());
+	}
+
+	@Override
+	public Funcionario obterPorId(Integer id) {
+
+		Funcionario funcionario = mapa.get(id);
+		
+		if(funcionario == null) {
+			throw new IllegalArgumentException("Imposível obter o funcionario pelo ID " + id);
+		}
+		
+		return funcionario;
 	}
 } 
