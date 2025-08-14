@@ -57,4 +57,29 @@ public class FuncionarioService implements CrudService<Funcionario, Integer> {
 
 		return funcionario;
 	}
+
+	public Funcionario alterar(Integer id, Funcionario funcionario) {
+		// Verifica se o funcionário existe
+		obterPorId(id);
+
+		// Valida os dados do funcionário
+		validarFuncionario(funcionario);
+
+		// Define o ID e salva
+		funcionario.setId(id);
+		mapa.put(id, funcionario);
+
+		return funcionario;
+	}
+
+	private void validarFuncionario(Funcionario funcionario) {
+		if (funcionario == null) {
+			throw new RecursoInvalidoException("Funcionário não pode ser nulo");
+		}
+
+		if (funcionario.getNome() == null || funcionario.getNome().trim().isEmpty()) {
+			throw new RecursoInvalidoException("O nome do funcionário é uma informação obrigatória!");
+		}
+	}
+	
 }
