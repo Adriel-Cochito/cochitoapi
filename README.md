@@ -75,24 +75,36 @@ Servico (Entidade Independente)
 
 ## 🛠️ Funcionalidades Implementadas
 
-### Feature 1: Configuração Essencial
-- ✅ Configuração inicial do projeto Spring Boot
-- ✅ Modelagem de entidade principal (Funcionario)
-- ✅ Implementação de operações CRUD básicas em memória
-- ✅ API REST simples com carregamento inicial de dados
+### Feature 1: Configuração Essencial ✅
+- Configuração inicial do projeto Spring Boot
+- Modelagem de entidade principal (Funcionario)
+- Implementação de operações CRUD básicas em memória
+- API REST simples com carregamento inicial de dados
 
-### Feature 2: Expansão do Modelo de Domínio
-- ✅ Modelagem de domínio via herança (Pessoa → Funcionario/Cliente)
-- ✅ Implementação de associação (Funcionario ↔ Endereco)
-- ✅ CRUD completo (GET, POST, PUT, PATCH, DELETE)
-- ✅ Tratamento de exceções customizadas
-- ✅ Separação de camadas (Controller, Service, Repository em memória)
+### Feature 2: Expansão do Modelo de Domínio ✅
+- **Modelagem completa**: Herança (Pessoa → Funcionario/Cliente) e Associação (Endereco)
+- **CRUD Completo**: Funcionario e Cliente com todos os verbos HTTP
+- **Operações Específicas**: `inativar` funcionário e `atualizarFidelidade` cliente
+- **Tratamento Robusto**: Exceções customizadas e GlobalExceptionHandler
+- **Loaders**: Carregamento automático de dados via arquivos texto
 
 ## 🔌 Endpoints da API
 
 ### Funcionários
 - `GET /api/funcionarios` - Lista todos os funcionários
 - `GET /api/funcionarios/{id}` - Busca funcionário por ID
+- `POST /api/funcionarios` - Cria novo funcionário
+- `PUT /api/funcionarios/{id}` - Altera funcionário completo
+- `PATCH /api/funcionarios/{id}/inativar` - Inativa funcionário
+- `DELETE /api/funcionarios/{id}` - Remove funcionário
+
+### Clientes
+- `GET /api/clientes` - Lista todos os clientes
+- `GET /api/clientes/{id}` - Busca cliente por ID
+- `POST /api/clientes` - Cria novo cliente
+- `PUT /api/clientes/{id}` - Altera cliente completo
+- `PATCH /api/clientes/{id}/fidelidade` - Atualiza nível de fidelidade
+- `DELETE /api/clientes/{id}` - Remove cliente
 
 ### Serviços
 - `GET /api/servicos` - Lista todos os serviços
@@ -131,7 +143,8 @@ http://localhost:8080/api
 
 O projeto utiliza arquivos texto para carga inicial dos dados:
 
-- `funcionario.txt` - Dados dos funcionários
+- `funcionario.txt` - Dados dos funcionários e endereços
+- `cliente.txt` - Dados dos clientes
 - `servico.txt` - Dados dos serviços
 
 ### Formato dos arquivos:
@@ -139,6 +152,11 @@ O projeto utiliza arquivos texto para carga inicial dos dados:
 **funcionario.txt:**
 ```
 Nome;Matricula;Salario;EhAtivo;CPF;Email;Telefone;CEP;Localidade
+```
+
+**cliente.txt:**
+```
+Nome;CPF;Email;Telefone;Fidelidade
 ```
 
 **servico.txt:**
@@ -150,16 +168,38 @@ Titulo;Preco;Descricao
 
 Recomenda-se o uso do **Postman** para testar os endpoints da API. Importe a coleção de requisições ou crie manualmente as seguintes requisições:
 
-### Exemplo de teste GET:
+### Exemplo de teste POST (Funcionário):
 ```http
-GET http://localhost:8080/api/funcionarios
-Accept: application/json
+POST http://localhost:8080/api/funcionarios
+Content-Type: application/json
+
+{
+    "nome": "João Silva",
+    "cpf": "123.456.789-00",
+    "email": "joao@email.com",
+    "telefone": "(11) 99999-9999",
+    "matricula": 12345,
+    "salario": 5000.00,
+    "ehAtivo": true,
+    "endereco": {
+        "cep": "01234-567",
+        "localidade": "São Paulo"
+    }
+}
 ```
 
-### Exemplo de teste GET por ID:
+### Exemplo de teste POST (Cliente):
 ```http
-GET http://localhost:8080/api/funcionarios/1
-Accept: application/json
+POST http://localhost:8080/api/clientes
+Content-Type: application/json
+
+{
+    "nome": "Maria Santos",
+    "cpf": "987.654.321-00",
+    "email": "maria@email.com",
+    "telefone": "(11) 88888-8888",
+    "fidelidade": "GOLD"
+}
 ```
 
 ## 🎯 Próximas Features
@@ -196,4 +236,4 @@ Projeto desenvolvido como parte do curso de Pós-graduação MIT em Engenharia d
 
 ---
 
-**Status do Projeto**: 🚧 Em Desenvolvimento - Feature 2 Concluída
+**Status do Projeto**: 🚀 Feature 2 Concluída - CRUD Completo Implementado

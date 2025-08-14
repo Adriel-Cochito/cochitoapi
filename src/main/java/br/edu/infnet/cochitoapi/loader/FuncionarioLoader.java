@@ -1,4 +1,4 @@
-package br.edu.infnet.cochitoapi;
+package br.edu.infnet.cochitoapi.loader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
