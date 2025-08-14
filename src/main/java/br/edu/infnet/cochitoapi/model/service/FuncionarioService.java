@@ -81,5 +81,18 @@ public class FuncionarioService implements CrudService<Funcionario, Integer> {
 			throw new RecursoInvalidoException("O nome do funcionário é uma informação obrigatória!");
 		}
 	}
-	
+
+	public Funcionario inativar(Integer id) {
+		// Busca o funcionário existente
+		Funcionario funcionarioExistente = obterPorId(id);
+
+		// Altera apenas o status ativo
+		funcionarioExistente.setEhAtivo(false);
+
+		// Salva a alteração
+		mapa.put(id, funcionarioExistente);
+
+		return funcionarioExistente;
+	}
+
 }
