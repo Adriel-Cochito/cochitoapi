@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.cochitoapi.model.domain.Servico;
-import br.edu.infnet.cochitoapi.model.domain.exceptions.ServicoInvalidoException;
+import br.edu.infnet.cochitoapi.model.domain.exceptions.RecursoInvalidoException;
 
 @Service
 public class ServicoService implements CrudService<Servico, Integer> {
@@ -21,7 +21,7 @@ public class ServicoService implements CrudService<Servico, Integer> {
 	public Servico salvar(Servico servico) {
 		
 		if(servico.getTitulo() == null) {
-			throw new ServicoInvalidoException("O nome do servico é uma informação obrigatória!");
+			throw new RecursoInvalidoException("O nome do servico é uma informação obrigatória!");
 		}
 		
 		servico.setId(nextId.getAndIncrement());

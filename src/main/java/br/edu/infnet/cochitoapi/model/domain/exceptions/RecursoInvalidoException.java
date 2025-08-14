@@ -1,10 +1,10 @@
 package br.edu.infnet.cochitoapi.model.domain.exceptions;
 
-public class FuncionarioInvalidoException extends RuntimeException {
+public class RecursoInvalidoException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public FuncionarioInvalidoException(String mensagem) {
+	public RecursoInvalidoException(String mensagem) {
 		super(mensagem);
 	}
 }
