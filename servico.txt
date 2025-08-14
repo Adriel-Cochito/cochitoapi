@@ -1,0 +1,5 @@
+Consultoria em Cibersegurança;2500.50;Análise de vulnerabilidades, testes de penetração e estratégias de proteção para infraestruturas de TI
+Desenvolvimento de E-commerce;8500.00;Criação de lojas virtuais completas e personalizadas, com integração de pagamentos e estoque
+Suporte Técnico Remoto;89.99;Atendimento especializado para resolução de problemas de hardware e software via acesso remoto seguro
+Otimização de SEO para Websites;1200.75;Melhoria do posicionamento de websites em buscadores como Google e Bing, aumentando o tráfego orgânico
+Hospedagem Gerenciada de Servidores;150.00;Serviço de hospedagem em nuvem com gerenciamento completo de servidores, backups e segurança

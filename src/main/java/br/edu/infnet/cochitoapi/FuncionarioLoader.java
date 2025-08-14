@@ -29,6 +29,9 @@ public class FuncionarioLoader implements ApplicationRunner {
 		String linha = leitura.readLine();
 
 		String[] campos = null;
+
+		System.out.println("---------------------------: ");
+		System.out.println("Profisisonais carregados: ");
 		
 		while(linha != null) {
 			
