@@ -76,17 +76,42 @@ Servico (Entidade Independente)
 ## 🛠️ Funcionalidades Implementadas
 
 ### Feature 1: Configuração Essencial ✅
-- Configuração inicial do projeto Spring Boot
-- Modelagem de entidade principal (Funcionario)
-- Implementação de operações CRUD básicas em memória
-- API REST simples com carregamento inicial de dados
+- ✅ Configuração inicial do projeto Spring Boot
+- ✅ Modelagem de entidade principal (Funcionario)
+- ✅ Implementação de operações CRUD básicas em memória
+- ✅ API REST simples com carregamento inicial de dados
+- ✅ Criação da primeira classe Controller
+- ✅ Implementação do primeiro Loader
+- ✅ Integração com Spring Boot e Maven
 
 ### Feature 2: Expansão do Modelo de Domínio ✅
-- **Modelagem completa**: Herança (Pessoa → Funcionario/Cliente) e Associação (Endereco)
-- **CRUD Completo**: Funcionario e Cliente com todos os verbos HTTP
-- **Operações Específicas**: `inativar` funcionário e `atualizarFidelidade` cliente
-- **Tratamento Robusto**: Exceções customizadas e GlobalExceptionHandler
-- **Loaders**: Carregamento automático de dados via arquivos texto
+- ✅ **Estrutura do modelo de domínio expandido**
+  - ✅ Classe Mãe: Pessoa (abstrata) com 4+ atributos
+  - ✅ Classe Filha 1: Funcionario (extends Pessoa) com atributos específicos
+  - ✅ Classe Filha 2: Cliente (extends Pessoa) com atributos específicos  
+  - ✅ Classe de Associação: Endereco (oneToOne com Funcionario)
+- ✅ **Tratamento de exceções customizadas**
+  - ✅ RecursoInvalidoException para regras de negócio
+  - ✅ RecursoNaoEncontradoException para recursos inexistentes
+  - ✅ GlobalExceptionHandler para tratamento centralizado
+- ✅ **Interface CrudService<T,ID> atualizada**
+  - ✅ Contrato completo: incluir, alterar, buscarPorId, listarTodos, excluir
+- ✅ **Gerenciamento de dados iniciais (Loaders)**
+  - ✅ FuncionarioLoader: carrega funcionários e endereços
+  - ✅ ClienteLoader: carrega clientes
+  - ✅ ServicoLoader: carrega serviços
+- ✅ **Camada de serviço completa**
+  - ✅ FuncionarioService: CRUD + inativar()
+  - ✅ ClienteService: CRUD + atualizarFidelidade()
+  - ✅ ServicoService: CRUD básico
+- ✅ **Camada de controle (API REST)**
+  - ✅ FuncionarioController: GET, POST, PUT, PATCH, DELETE
+  - ✅ ClienteController: GET, POST, PUT, PATCH, DELETE  
+  - ✅ ServicoController: GET (básico)
+- ✅ **Testes com Postman**
+  - ✅ Coleções preparadas para todos os endpoints
+  - ✅ RequestBody e PathVariable implementados
+  - ✅ Validação de todos os verbos HTTP
 
 ## 🔌 Endpoints da API
 
@@ -204,12 +229,30 @@ Content-Type: application/json
 
 ## 🎯 Próximas Features
 
-### Feature 3: Persistência com Banco de Dados (Em Desenvolvimento)
-- [ ] Integração com banco H2
-- [ ] Configuração do Spring Data JPA
-- [ ] Mapeamento JPA das entidades
-- [ ] Repositórios com JpaRepository
-- [ ] ResponseEntity e códigos de status HTTP apropriados
+### Feature 3: Persistência com Banco de Dados (Em Planejamento)
+- [ ] **Dependências essenciais (pom.xml)**
+  - [ ] Spring Boot Starter Data JPA
+  - [ ] H2 Database
+- [ ] **Configuração do banco de dados (application.properties)**
+  - [ ] Configuração H2 em memória
+  - [ ] Console H2 habilitado
+  - [ ] Configuração JPA/Hibernate
+- [ ] **Mapeamento das entidades com JPA**
+  - [ ] @Entity nas classes de domínio
+  - [ ] @Id e @GeneratedValue para chaves primárias
+  - [ ] Estratégia de herança definida
+  - [ ] Relacionamentos @OneToOne, @ManyToOne mapeados
+- [ ] **Criação de repositórios com Spring Data JPA**
+  - [ ] FuncionarioRepository extends JpaRepository
+  - [ ] ClienteRepository extends JpaRepository
+  - [ ] ServicoRepository extends JpaRepository
+- [ ] **Atualização da camada de serviço**
+  - [ ] Migração de Map para JpaRepository
+  - [ ] Remoção de AtomicInteger (ID automático)
+- [ ] **Refinamento da API REST**
+  - [ ] ResponseEntity em todos os endpoints
+  - [ ] Status HTTP apropriados (200, 201, 204, 400, 404)
+  - [ ] Headers Location para recursos criados
 
 ## 🏛️ Padrões e Boas Práticas
 
@@ -219,7 +262,28 @@ Content-Type: application/json
 - **Interface Genérica**: `CrudService<T,ID>` para padronização
 - **Thread Safety**: Uso de `ConcurrentHashMap` para armazenamento em memória
 
-## 📝 Conceitos Aplicados
+## 📊 Status de Entrega por Feature
+
+| Feature | Status | Entregáveis | Progresso |
+|---------|---------|-------------|-----------|
+| **Feature 1** | ✅ **Concluída** | Configuração base + CRUD simples | 100% |
+| **Feature 2** | ✅ **Concluída** | Modelo expandido + CRUD completo | 100% |
+| **Feature 3** | 📋 **Planejada** | Persistência JPA + API refinada | 0% |
+| **Feature 4** | 🔮 **A definir** | *Aguardando especificação* | 0% |
+
+### Feature 4: A Definir (Aguardando Especificação)
+- 🔮 **Especificação pendente**
+  - [ ] *Aguardando definição dos requisitos*
+  - [ ] *Conceitos e tecnologias a serem aplicados*
+  - [ ] *Entregáveis e objetivos da feature*
+
+### 🎯 Roadmap Completo
+1. ✅ **Feature 1**: Fundação e CRUD básico 
+2. ✅ **Feature 2**: Expansão do modelo e robustez
+3. 📋 **Feature 3**: Persistência e refinamento da API
+4. 🔮 **Feature 4**: *Especificação em desenvolvimento*
+
+---
 
 - **Orientação a Objetos**: Herança, Polimorfismo, Encapsulamento
 - **Padrões de Design**: MVC, Dependency Injection
@@ -236,4 +300,4 @@ Projeto desenvolvido como parte do curso de Pós-graduação MIT em Engenharia d
 
 ---
 
-**Status do Projeto**: 🚀 Feature 2 Concluída - CRUD Completo Implementado
+**Status do Projeto**: 🚀 Feature 2 Concluída | 📋 Feature 3 Planejada | 🔮 Feature 4 A Definir
