@@ -42,7 +42,7 @@ public class FuncionarioLoader implements ApplicationRunner {
 			funcionario.setNome(campos[0]);
 			funcionario.setMatricula(Integer.valueOf(campos[1]));
 			funcionario.setSalario(Double.valueOf(campos[2]));
-			funcionario.setEhAtivo(Boolean.valueOf(campos[3]));
+			funcionario.setAtivo(Boolean.valueOf(campos[3]));
 
 			funcionario.setCpf(campos[4]);
 			funcionario.setEmail(campos[5]);

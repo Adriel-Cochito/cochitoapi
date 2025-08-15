@@ -1,19 +1,28 @@
 package br.edu.infnet.cochitoapi.model.domain;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Funcionario extends Pessoa {
 
 	private int matricula;
 	private double salario;
-	private boolean ehAtivo;
+	private boolean ativo;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 	
-	//TODO construtor do vendedor
+	//TODO construtor padrão do vendedor para marcar o vendedor como ativo
+	
+	//TODO construtor com os campos de pessoa e os demais campos de vendedor
 	
 	@Override
 	public String toString() {
-
-		return String.format("%s - %d - %.2f - %s - %s", 
-				super.toString(), matricula, salario, ehAtivo ? "ativo" : "inativo", endereco);
+		return String.format("Funcionario{%s, matricula=%d, salario=%.2f, ehAtivo=%s, %s", super.toString(), matricula, salario, ativo ? "ativo" : "inativo", endereco);
 	}
 
 	@Override
@@ -37,12 +46,12 @@ public class Funcionario extends Pessoa {
 		this.salario = salario;
 	}
 
-	public boolean isEhAtivo() {
-		return ehAtivo;
+	public boolean isAtivo() {
+		return ativo;
 	}
 
-	public void setEhAtivo(boolean ehAtivo) {
-		this.ehAtivo = ehAtivo;
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public Endereco getEndereco() {

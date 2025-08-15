@@ -77,6 +77,7 @@ public class ServicoService implements CrudService<Servico, Integer> {
 		if (servico.getTitulo() == null || servico.getTitulo().trim().isEmpty()) {
 			throw new RecursoInvalidoException("O titulo do servico é uma informação obrigatória!");
 		}
+
 	}
 
 } 
