@@ -19,7 +19,7 @@ public class FuncionarioService implements CrudService<Funcionario, Integer> {
 	private final AtomicInteger nextId = new AtomicInteger(1);
 
 	@Override
-	public Funcionario salvar(Funcionario funcionario) {
+	public Funcionario incluir(Funcionario funcionario) {
 
 		if (funcionario.getNome() == null) {
 			throw new RecursoInvalidoException("O nome do funcionario é uma informação obrigatória!");
@@ -48,6 +48,10 @@ public class FuncionarioService implements CrudService<Funcionario, Integer> {
 
 	@Override
 	public Funcionario obterPorId(Integer id) {
+
+		if(id == null || id == 0) {
+			throw new IllegalArgumentException("O ID para alteração não pode ser nulo/zero!");			
+		}
 
 		Funcionario funcionario = mapa.get(id);
 

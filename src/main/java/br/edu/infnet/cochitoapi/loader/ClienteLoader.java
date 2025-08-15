@@ -42,7 +42,7 @@ public class ClienteLoader implements ApplicationRunner {
 			cliente.setTelefone(campos[3]);
 			cliente.setFidelidade(campos[4]);
 			
-			clienteService.salvar(cliente);
+			clienteService.incluir(cliente);
 
 			System.out.println(cliente);
 			

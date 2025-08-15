@@ -54,7 +54,7 @@ public class FuncionarioLoader implements ApplicationRunner {
 			
 			funcionario.setEndereco(endereco);
 			
-			funcionarioService.salvar(funcionario);
+			funcionarioService.incluir(funcionario);
 
 			System.out.println(funcionario);
 			

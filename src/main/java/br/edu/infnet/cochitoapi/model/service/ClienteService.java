@@ -19,16 +19,6 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 	private final Map<Integer, Cliente> mapa = new ConcurrentHashMap<Integer, Cliente>();
 	private final AtomicInteger nextId = new AtomicInteger(1);
 
-	@Override
-	public Cliente salvar(Cliente cliente) {
-
-		validarCliente(cliente);
-		cliente.setId(nextId.getAndIncrement());
-
-		mapa.put(cliente.getId(), cliente);
-
-		return cliente;
-	}
 
 	public Cliente incluir(Cliente cliente) {
 

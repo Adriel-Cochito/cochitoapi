@@ -45,7 +45,7 @@ public class ServicoLoader implements ApplicationRunner {
 			servico.setDescricao(campos[2]);
 
 			
-			servicoService.salvar(servico);
+			servicoService.incluir(servico);
 
 			System.out.println(servico);
 			

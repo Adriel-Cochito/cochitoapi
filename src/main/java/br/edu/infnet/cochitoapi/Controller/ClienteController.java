@@ -49,22 +49,15 @@ public class ClienteController {
 		return ResponseEntity.ok(clienteAlterado);
 	}
 
-	@PatchMapping(value = "/{id}/fidelidade")
-	public ResponseEntity<Cliente> atualizarFidelidade(@PathVariable Integer id, @RequestBody FidelidadeRequest request) {
-		Cliente clienteAtualizado = clienteService.atualizarFidelidade(id, request.getFidelidade());
-		return ResponseEntity.ok(clienteAtualizado);
-	}
-
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> excluirCliente(@PathVariable Integer id) {
 		clienteService.excluir(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	public static class FidelidadeRequest {
-		private String fidelidade;
-		
-		public String getFidelidade() { return fidelidade; }
-		public void setFidelidade(String fidelidade) { this.fidelidade = fidelidade; }
+	@PatchMapping(value = "/{id}/fidelidade")
+	public ResponseEntity<Cliente> atualizarFidelidade(@PathVariable Integer id, @RequestBody String fidelidade) {
+		return ResponseEntity.ok(clienteService.atualizarFidelidade(id, fidelidade));
 	}
+
 }

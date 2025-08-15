@@ -29,7 +29,7 @@ public class FuncionarioController {
 
 	@PostMapping
 	public ResponseEntity<Funcionario> incluirFuncionario(@RequestBody Funcionario funcionario) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.salvar(funcionario));
+		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.incluir(funcionario));
 	}
 
 	@GetMapping
