@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.infnet.cochitoapi.model.domain.Funcionario;
+import br.edu.infnet.cochitoapi.model.domain.exceptions.RecursoInvalidoException;
 import br.edu.infnet.cochitoapi.model.service.FuncionarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/funcionarios")
@@ -28,8 +30,18 @@ public class FuncionarioController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Funcionario> incluirFuncionario(@RequestBody Funcionario funcionario) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.incluir(funcionario));
+	public ResponseEntity<Funcionario> incluirFuncionario(@Valid @RequestBody Funcionario funcionario) {
+		try {
+			Funcionario novoFuncionario = funcionarioService.incluir(funcionario);
+
+			return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncionario);
+
+		} catch (RecursoInvalidoException e) {
+			return ResponseEntity.badRequest().build();
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	@GetMapping

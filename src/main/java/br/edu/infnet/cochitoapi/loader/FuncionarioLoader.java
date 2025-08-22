@@ -2,6 +2,8 @@ package br.edu.infnet.cochitoapi.loader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
+
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import br.edu.infnet.cochitoapi.model.domain.Endereco;
 import br.edu.infnet.cochitoapi.model.domain.Funcionario;
+import br.edu.infnet.cochitoapi.model.domain.exceptions.RecursoInvalidoException;
 import br.edu.infnet.cochitoapi.model.service.FuncionarioService;
 
 @Component
@@ -30,8 +33,7 @@ public class FuncionarioLoader implements ApplicationRunner {
 
 		String[] campos = null;
 
-		System.out.println("---------------------------: ");
-		System.out.println("Profisisonais carregados: ");
+
 		
 		while(linha != null) {
 			
@@ -54,14 +56,27 @@ public class FuncionarioLoader implements ApplicationRunner {
 			
 			funcionario.setEndereco(endereco);
 			
-			funcionarioService.incluir(funcionario);
+			
+			try {
+				funcionarioService.incluir(funcionario);
+			} catch (RecursoInvalidoException e) {
+				System.err.println("Problema na inclusão do Funcionario: " + e.getMessage());
+			} catch (Exception e) {
+				System.err.println("Deu erro! " + e.getMessage());
+			}
 
-			System.out.println(funcionario);
+		
 			
 			linha = leitura.readLine();
 		}
+
+		System.out.println("---------------------------: ");
+		System.out.println("Profisisonais carregados: ");
+
+		List<Funcionario> funcionarios = funcionarioService.obterLista();
+		funcionarios.forEach(System.out::println);
 		
-		System.out.println("- Total: " + funcionarioService.obterLista().size());
+		System.out.println("- Total: " + funcionarios.size());
 
 		leitura.close();
 	}

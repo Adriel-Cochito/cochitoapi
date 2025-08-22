@@ -4,16 +4,23 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Funcionario extends Pessoa {
 
+	@NotNull
 	private int matricula;
+
+	@Min(value = 0)
 	private double salario;
 	private boolean ativo;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id")
+	@Valid
 	private Endereco endereco;
 	
 	//TODO construtor padrão do vendedor para marcar o vendedor como ativo

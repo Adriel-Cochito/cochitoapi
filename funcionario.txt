@@ -1,4 +1,12 @@
-Adriel Cochito;123;5000;true;34996699969;cochito@gmail.com;12312312312;12345678;Minas Gerais
-Mariana Lopes;456;7500;false;21987654321;mariana.lopes@gmail.com;98765432100;87654321;São Paulo
-Carlos Henrique;789;6200;true;31999887766;carlos.henrique@gmail.com;12398745609;23456789;Rio de Janeiro
-Fernanda Silva;321;5400;false;47995544332;fernanda.silva@gmail.com;32165498701;34567890;Bahia
+Adriel Cochito;123;5000;true;349.966.999-69;cochito@gmail.com;(11) 99999-9999;12345-678;Minas Gerais
+Mariana Lopes;456;7500;false;219.876.543-21;mariana.lopes@gmail.com;(21) 98765-4321;87654-321;São Paulo
+Carlos Henrique;789;6200;true;319.998.877-66;carlos.henrique@gmail.com;(31) 99988-7766;23456-789;Rio de Janeiro
+Fernanda Silva;321;5400;false;479.955.443-32;fernanda.silva@gmail.com;(47) 99554-4332;34567-890;Bahia
+Jo;111;3000;true;11.111.111-11;jo@email.com;11 1111-1111;12345-123;São Paulo
+Ana Carolina Ferreira dos Santos Silva;222;4000;false;222.222.222-22;ana@email.com;(11) 99999-9999;12345-678;Rio de Janeiro
+Pedro;333;2500;true;33333333333;pedro@gmail.com;11999887766;98765-432;Bahia
+;444;1800;false;444.444.444-44;@gmail.com;(21) 88888-8888;11111-111;Minas Gerais
+Luiza Santos;555;-1000;true;555.555.555-55;luiza.santos@email.com;(31) 77777-777;22222-222;São Paulo
+Roberto Silva;666;0;false;666.666.666-66;roberto.silva@gmail.com;31 9999-8888;33333-333;Rio de Janeiro
+Maria José;777;8500;true;777777777-77;maria.jose@email.com;(47) 9999-88888;44444-444;Bahia
+Francisco;888;3500;false;888.888.888.88;francisco@gmail.com;47 99999 8888;55555-555;Minas Gerais
