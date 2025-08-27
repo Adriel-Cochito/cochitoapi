@@ -8,4 +8,6 @@ import br.edu.infnet.cochitoapi.model.domain.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
+    // Query Method para buscar por CPF (necessário para OrdemServicoLoader)
+    Cliente findByCpf(String cpf);
 }

@@ -5,13 +5,14 @@ import java.io.FileReader;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import br.edu.infnet.cochitoapi.model.domain.Endereco;
 import br.edu.infnet.cochitoapi.model.domain.Servico;
 import br.edu.infnet.cochitoapi.model.service.ServicoService;
 
 @Component
+@Order(2)
 public class ServicoLoader implements ApplicationRunner {
 	
 	private final ServicoService servicoService;
@@ -52,7 +53,7 @@ public class ServicoLoader implements ApplicationRunner {
 			linha = leitura.readLine();
 		}
 		
-		System.out.println("- Total: " + servicoService.obterLista().size());
+		System.out.println("- Total de Serviços: " + servicoService.obterLista().size());
 
 		leitura.close();
 	}

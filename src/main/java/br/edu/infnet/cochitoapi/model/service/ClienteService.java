@@ -83,4 +83,13 @@ public class ClienteService implements CrudService<Cliente, Integer> {
 			throw new RecursoInvalidoException("O nome do cliente é uma informação obrigatória!");
 		}
 	}
+
+	// Método específico necessário para OrdemServicoLoader (Feature 4)
+	public Cliente buscarPorCpf(String cpf) {
+		Cliente cliente = clienteRepository.findByCpf(cpf);
+		if (cliente == null) {
+			throw new RecursoNaoEncontradoException("Cliente com CPF " + cpf + " não encontrado");
+		}
+		return cliente;
+	}
 }

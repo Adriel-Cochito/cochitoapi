@@ -5,12 +5,14 @@ import java.io.FileReader;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import br.edu.infnet.cochitoapi.model.domain.Cliente;
 import br.edu.infnet.cochitoapi.model.service.ClienteService;
 
 @Component
+@Order(3)
 public class ClienteLoader implements ApplicationRunner {
 	
 	private final ClienteService clienteService;
@@ -49,7 +51,7 @@ public class ClienteLoader implements ApplicationRunner {
 			linha = leitura.readLine();
 		}
 		
-		System.out.println("- Total: " + clienteService.obterLista().size());
+		System.out.println("- Total de Clientes: " + clienteService.obterLista().size());
 
 		leitura.close();
 	}

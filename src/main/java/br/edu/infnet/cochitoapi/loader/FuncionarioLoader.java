@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import br.edu.infnet.cochitoapi.model.domain.Endereco;
@@ -13,6 +14,7 @@ import br.edu.infnet.cochitoapi.model.domain.Funcionario;
 import br.edu.infnet.cochitoapi.model.service.FuncionarioService;
 
 @Component
+@Order(1)
 public class FuncionarioLoader implements ApplicationRunner {
 
 	private final FuncionarioService funcionarioService;
@@ -72,7 +74,7 @@ public class FuncionarioLoader implements ApplicationRunner {
 		List<Funcionario> funcionarios = funcionarioService.obterLista();
 		funcionarios.forEach(System.out::println);
 
-		System.out.println("- Total: " + funcionarios.size());
+		System.out.println("- Total de Funcionarios: " + funcionarios.size());
 
 		leitura.close();
 	}
