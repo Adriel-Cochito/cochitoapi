@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.infnet.cochitoapi.model.domain.Funcionario;
 import br.edu.infnet.cochitoapi.model.domain.Servico;
 import br.edu.infnet.cochitoapi.model.service.ServicoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/servicos")
@@ -27,8 +28,9 @@ public class ServicoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Servico> incluirServico(@RequestBody Servico servico) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(servicoService.incluir(servico));
+	public ResponseEntity<Servico> incluirServico(@Valid @RequestBody Servico servico) {
+		Servico servicoSalvo = servicoService.incluir(servico);
+		return ResponseEntity.status(HttpStatus.CREATED).body(servicoSalvo);
 	}
 	
 	@GetMapping
@@ -43,7 +45,14 @@ public class ServicoController {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Servico> alterarServico(@PathVariable Integer id,
-			@RequestBody Servico servico) {
-		return ResponseEntity.ok(servicoService.alterar(id, servico));
+			@Valid @RequestBody Servico servico) {
+		Servico servicoAlterado = servicoService.alterar(id, servico);
+		return ResponseEntity.ok(servicoAlterado);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> excluirServico(@PathVariable Integer id) {
+		servicoService.excluir(id);
+		return ResponseEntity.noContent().build();
 	}
 }
