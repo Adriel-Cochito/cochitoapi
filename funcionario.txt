@@ -1,12 +1,12 @@
-Adriel Cochito;123;5000;true;349.966.999-69;cochito@gmail.com;(11) 99999-9999;12345-678;Minas Gerais
-Mariana Lopes;456;7500;false;219.876.543-21;mariana.lopes@gmail.com;(21) 98765-4321;87654-321;São Paulo
-Carlos Henrique;789;6200;true;319.998.877-66;carlos.henrique@gmail.com;(31) 99988-7766;23456-789;Rio de Janeiro
-Fernanda Silva;321;5400;false;479.955.443-32;fernanda.silva@gmail.com;(47) 99554-4332;34567-890;Bahia
-Jo;111;3000;true;11.111.111-11;jo@email.com;11 1111-1111;12345-123;São Paulo
-Ana Carolina Ferreira dos Santos Silva;222;4000;false;222.222.222-22;ana@email.com;(11) 99999-9999;12345-678;Rio de Janeiro
-Pedro;333;2500;true;33333333333;pedro@gmail.com;11999887766;98765-432;Bahia
-;444;1800;false;444.444.444-44;@gmail.com;(21) 88888-8888;11111-111;Minas Gerais
-Luiza Santos;555;-1000;true;555.555.555-55;luiza.santos@email.com;(31) 77777-777;22222-222;São Paulo
-Roberto Silva;666;0;false;666.666.666-66;roberto.silva@gmail.com;31 9999-8888;33333-333;Rio de Janeiro
-Maria José;777;8500;true;777777777-77;maria.jose@email.com;(47) 9999-88888;44444-444;Bahia
-Francisco;888;3500;false;888.888.888.88;francisco@gmail.com;47 99999 8888;55555-555;Minas Gerais
+Adriel Cochito;cochito@gmail.com;349.966.999-69;(11) 99999-9999;123;5000.0;true;12345-678;Rua das Flores 123;Casa;;Centro;Uberlândia;MG;Minas Gerais
+Mariana Lopes;mariana.lopes@gmail.com;219.876.543-21;(21) 98765-4321;456;7500.0;false;87654-321;Avenida Paulista 1000;Conjunto 45;Andar 10;Bela Vista;São Paulo;SP;São Paulo
+Carlos Henrique;carlos.henrique@gmail.com;319.998.877-66;(31) 99988-7766;789;6200.0;true;23456-789;Rua Copacabana 500;Apartamento 201;;Copacabana;Rio de Janeiro;RJ;Rio de Janeiro
+Fernanda Silva;fernanda.silva@gmail.com;479.955.443-32;(47) 99554-4332;321;5400.0;false;34567-890;Largo do Pelourinho 25;;Loja 3;Pelourinho;Salvador;BA;Bahia
+João Silva;jo@email.com;111.111.111-11;(11) 11111-1111;111;3000.0;true;12345-123;Rua Augusta 800;;Sala 102;Vila Madalena;São Paulo;SP;São Paulo
+An;ana@email.com;222.222.222-22;(11) 99999-9999;222;4000.0;false;12345-678;;;Apartamento 505;;Rio de Janeiro;RJ;Rio de Janeiro
+Pedro;pedro@gmail.com;33333333333;11 99988-7766;333;2500.0;true;98765-432;;;Casa 2;;Salvador;BA;Bahia
+;@gmail.com;444.444.444-44;(21) 88888-8888;444;1800.0;false;1111-111;;;Ce;;Minas Gerais;MG;Minas Gerais
+Luiza Santos;luiza.santos@email.com;555.555.555-55;31 77777-777;555;-1000.0;true;22222-222;;;Cobertura;;São Paulo;SP;São Paulo
+Roberto Silva;roberto.silva@gmail.com;666.666.666-66;31 9999-8888;666;0.0;false;33333-333;;Apartamento 1002;Ce;;Rio de Janeiro;RJ;Rio de Janeiro
+Maria José;maria.jose@email.com;777777777-77;47 9999-88888;777;8500.0;true;44444-444;;;Loja 15;;Salvador;BA;Bahia
+Francisco;francisco@gmail.com;888.888.888.88;47 99999 8888;888;3500.0;false;5555-555;;;Apartamento 803;;Belo Horizonte;MG;Minas Gerais

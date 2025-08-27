@@ -16,14 +16,15 @@ public abstract class Pessoa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotBlank(message = "O nome é obrigatório.")
 	@Size(min = 3, max = 50, message = "O nome deve estar entre 3 e 50 caracteres.")
 	private String nome;
 
 	@NotBlank(message = "O e-mail é obrigatório.")
 	@Email(message = "O e-mail está inválido.")
 	private String email;
+
 	@NotBlank(message = "O CPF é obrigatório")
-	
 	@Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", 
 	         message = "CPF deve estar no formato XXX.XXX.XXX-XX")
 	private String cpf;

@@ -11,25 +11,28 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Funcionario extends Pessoa {
 
-	@NotNull
+	@NotNull(message = "A matrícula é obrigatória.")
+	@Min(value = 1, message = "A matrícula deve ser um número positivo.")
 	private int matricula;
 
-	@Min(value = 0)
+	@NotNull(message = "O salário é obrigatório.")
+	@Min(value = 0, message = "O salário não pode ser negativo.")
 	private double salario;
 	private boolean ativo;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id")
 	@Valid
 	private Endereco endereco;
-	
-	//TODO construtor padrão do vendedor para marcar o vendedor como ativo
-	
-	//TODO construtor com os campos de pessoa e os demais campos de vendedor
-	
+
+	// TODO construtor padrão do vendedor para marcar o vendedor como ativo
+
+	// TODO construtor com os campos de pessoa e os demais campos de vendedor
+
 	@Override
 	public String toString() {
-		return String.format("Funcionario{%s, matricula=%d, salario=%.2f, ehAtivo=%s, %s", super.toString(), matricula, salario, ativo ? "ativo" : "inativo", endereco);
+		return String.format("Funcionario{%s, matricula=%d, salario=%.2f, ehAtivo=%s, %s", super.toString(), matricula,
+				salario, ativo ? "ativo" : "inativo", endereco);
 	}
 
 	@Override

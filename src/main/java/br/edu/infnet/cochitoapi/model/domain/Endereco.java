@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Endereco {
@@ -13,14 +16,33 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String cep; 
-	private String logradouro; 
-	private String complemento; 
-	private String unidade; 
-	private String bairro; 
-	private String localidade; 
-	private String uf; 
-	private String estado;
+    @NotBlank(message = "O CEP é obrigatório.")
+    @Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP inválido. Use o formato XXXXX-XXX.")
+    private String cep; 
+
+    @NotBlank(message = "O logradouro é obrigatório.")
+    @Size(min = 3, max = 100, message = "Logradouro deve ter entre 3 e 100 caracteres.")
+    private String logradouro; 
+
+    private String complemento;
+
+    private String unidade;
+
+    @NotBlank(message = "O bairro é obrigatório.")
+    @Size(min = 3, max = 50, message = "Bairro deve ter entre 3 e 50 caracteres.")
+    private String bairro; 
+
+    @NotBlank(message = "A localidade é obrigatória.")
+    @Size(min = 3, max = 50, message = "Localidade deve ter entre 3 e 50 caracteres.")
+    private String localidade; 
+
+    @NotBlank(message = "A UF é obrigatória.")
+    @Size(min = 2, max = 2, message = "UF deve ter 2 caracteres.")
+    private String uf; 
+
+    @NotBlank(message = "O estado é obrigatório.")
+    @Size(min = 3, max = 50, message = "Estado deve ter entre 3 e 50 caracteres.")
+    private String estado;
 	
 	//TODO construtor do endereço
 	
