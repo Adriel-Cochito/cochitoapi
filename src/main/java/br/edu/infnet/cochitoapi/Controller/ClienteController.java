@@ -1,6 +1,7 @@
 package br.edu.infnet.cochitoapi.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.infnet.cochitoapi.model.domain.Cliente;
 import br.edu.infnet.cochitoapi.model.service.ClienteService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -38,13 +40,13 @@ public class ClienteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Cliente> incluirCliente(@RequestBody Cliente cliente) {
+	public ResponseEntity<Cliente> incluirCliente(@Valid @RequestBody Cliente cliente) {
 		Cliente clienteSalvo = clienteService.incluir(cliente);
 		return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Cliente> alterarCliente(@PathVariable Integer id, @RequestBody Cliente cliente) {
+	public ResponseEntity<Cliente> alterarCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
 		Cliente clienteAlterado = clienteService.alterar(id, cliente);
 		return ResponseEntity.ok(clienteAlterado);
 	}
@@ -56,7 +58,8 @@ public class ClienteController {
 	}
 
 	@PatchMapping(value = "/{id}/fidelidade")
-	public ResponseEntity<Cliente> atualizarFidelidade(@PathVariable Integer id, @RequestBody String fidelidade) {
+	public ResponseEntity<Cliente> atualizarFidelidade(@PathVariable Integer id, @RequestBody Map<String, String> request) {
+		String fidelidade = request.get("fidelidade");
 		return ResponseEntity.ok(clienteService.atualizarFidelidade(id, fidelidade));
 	}
 

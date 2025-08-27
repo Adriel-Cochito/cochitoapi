@@ -1,6 +1,14 @@
 package br.edu.infnet.cochitoapi.model.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+@Entity
 public class Cliente extends Pessoa {
 
+	@NotBlank(message = "A fidelidade é obrigatória.")
+	@Size(min = 3, max = 20, message = "Fidelidade deve ter entre 3 e 20 caracteres.")
 	private String fidelidade;
 
 	// Construtor padrão
@@ -17,7 +25,7 @@ public class Cliente extends Pessoa {
 	
 	@Override
 	public String toString() {
-		return String.format("%s - Fidelidade: %s", super.toString(), fidelidade);
+		return String.format("Cliente{%s, fidelidade='%s'}", super.toString(), fidelidade);
 	}
 	
 	@Override

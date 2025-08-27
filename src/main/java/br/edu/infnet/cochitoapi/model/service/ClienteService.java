@@ -1,79 +1,77 @@
 package br.edu.infnet.cochitoapi.model.service;
 
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.cochitoapi.model.domain.Cliente;
 import br.edu.infnet.cochitoapi.model.domain.exceptions.RecursoInvalidoException;
 import br.edu.infnet.cochitoapi.model.domain.exceptions.RecursoNaoEncontradoException;
+import br.edu.infnet.cochitoapi.model.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService implements CrudService<Cliente, Integer> {
 
-	private final Map<Integer, Cliente> mapa = new ConcurrentHashMap<Integer, Cliente>();
-	private final AtomicInteger nextId = new AtomicInteger(1);
+	private final ClienteRepository clienteRepository;
 
-
-	public Cliente incluir(Cliente cliente) {
-
-		validarCliente(cliente);
-		cliente.setId(nextId.getAndIncrement());
-        
-		mapa.put(cliente.getId(), cliente);
-
-		return cliente;
-	}
-
-	public Cliente alterar(Integer id, Cliente cliente) {
-
-		obterPorId(id);
-		validarCliente(cliente);
-		cliente.setId(id);
-
-		mapa.put(id, cliente);
-		
-		return cliente;
-	}
-
-	public Cliente atualizarFidelidade(Integer id, String novaFidelidade) {
-
-		Cliente clienteExistente = obterPorId(id);
-		clienteExistente.setFidelidade(novaFidelidade);
-
-		mapa.put(id, clienteExistente);
-		
-		return clienteExistente;
+	public ClienteService(ClienteRepository clienteRepository) {
+		this.clienteRepository = clienteRepository;
 	}
 
 	@Override
-	public void excluir(Integer id) {
+	@Transactional
+	public Cliente incluir(Cliente cliente) {
+		validarCliente(cliente);
+		return clienteRepository.save(cliente);
+	}
 
-		if (!mapa.containsKey(id)) {
-			throw new RecursoNaoEncontradoException("Cliente com ID " + id + " não encontrado");
+	@Override
+	@Transactional
+	public Cliente alterar(Integer id, Cliente cliente) {
+		// Verifica se o cliente existe
+		obterPorId(id);
+		
+		validarCliente(cliente);
+		
+		// Define o ID e salva
+		cliente.setId(id);
+		return clienteRepository.save(cliente);
+	}
+
+	@Transactional
+	public Cliente atualizarFidelidade(Integer id, String novaFidelidade) {
+		if (novaFidelidade == null || novaFidelidade.trim().isEmpty()) {
+			throw new RecursoInvalidoException("Fidelidade não pode ser vazia");
 		}
-		mapa.remove(id);
+		
+		Cliente clienteExistente = obterPorId(id);
+		clienteExistente.setFidelidade(novaFidelidade);
+
+		return clienteRepository.save(clienteExistente);
+	}
+
+	@Override
+	@Transactional
+	public void excluir(Integer id) {
+		Cliente cliente = obterPorId(id);
+		clienteRepository.delete(cliente);
 	}
 
 	@Override
 	public List<Cliente> obterLista() {
-		return new ArrayList<Cliente>(mapa.values());
+		return clienteRepository.findAll();
 	}
 
 	@Override
 	public Cliente obterPorId(Integer id) {
-		Cliente cliente = mapa.get(id);
-		
-		if (cliente == null) {
-			throw new RecursoNaoEncontradoException("Cliente com ID " + id + " não encontrado");
+		if (id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID não pode ser nulo ou menor/igual a zero!");
 		}
 		
-		return cliente;
+		return clienteRepository.findById(id).orElseThrow(
+				() -> new RecursoNaoEncontradoException("Cliente com ID " + id + " não encontrado")
+		);
 	}
 
 	private void validarCliente(Cliente cliente) {
