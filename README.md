@@ -6,6 +6,8 @@ Uma API REST desenvolvida em Java com Spring Boot para gestão e controle de ser
 
 Este projeto faz parte da disciplina "Desenvolvimento Avançado com Spring e Microsserviços" da Pós-graduação MIT em Engenharia de Software. A aplicação implementa um sistema completo de CRUD (Create, Read, Update, Delete) para gestão de entidades de negócio, seguindo as melhores práticas de desenvolvimento com Spring Framework.
 
+**Status do Projeto**: ✅ **CONCLUÍDO** - Todas as 4 Features implementadas com sucesso!
+
 ## 🚀 Tecnologias Utilizadas
 
 - **Java 17**
@@ -16,6 +18,8 @@ Este projeto faz parte da disciplina "Desenvolvimento Avançado com Spring e Mic
 - **H2 Database**
 - **Maven**
 - **RESTful API**
+- **Bean Validation**
+- **Global Exception Handling**
 
 ## 📁 Estrutura do Projeto
 
@@ -48,7 +52,7 @@ Pessoa (Classe Abstrata - @MappedSuperclass)
 └── Cliente (@Entity)
 
 Endereco (@Entity - Classe de Associação)
-Servico (Entidade Independente)
+Servico (@Entity - Entidade Independente)
 ```
 
 ## 📊 Entidades
@@ -61,34 +65,34 @@ Servico (Entidade Independente)
 - `telefone`: String (validado: formato (XX) XXXXX-XXXX)
 
 ### Funcionario (@Entity extends Pessoa)
-- `matricula`: int (obrigatório)
+- `matricula`: int (obrigatório, mínimo: 1)
 - `salario`: double (mínimo: 0)
-- `ehAtivo`: boolean
+- `ativo`: boolean
 - `endereco`: Endereco (@ManyToOne, cascade=ALL)
 
-### Cliente (extends Pessoa)
-- `fidelidade`: String
+### Cliente (@Entity extends Pessoa)
+- `fidelidade`: String (validado: 3-20 caracteres)
 
-### Servico
-- `id`: Integer
-- `titulo`: String
-- `preco`: double
-- `descricao`: String
+### Servico (@Entity)
+- `id`: Integer (PK, auto-increment)
+- `titulo`: String (validado: 3-100 caracteres)
+- `preco`: double (mínimo: 0)
+- `descricao`: String (validado: 10-500 caracteres)
 
 ### Endereco (@Entity)
 - `id`: Integer (PK, auto-increment)
-- `cep`: String
-- `logradouro`: String
+- `cep`: String (validado: formato XXXXX-XXX)
+- `logradouro`: String (validado: 3-100 caracteres)
 - `complemento`: String
 - `unidade`: String
-- `bairro`: String
-- `localidade`: String
-- `uf`: String
-- `estado`: String
+- `bairro`: String (validado: 3-50 caracteres)
+- `localidade`: String (validado: 3-50 caracteres)
+- `uf`: String (validado: 2 caracteres)
+- `estado`: String (validado: 3-50 caracteres)
 
 ## 🛠️ Funcionalidades Implementadas
 
-### Feature 1: Configuração Essencial ✅
+### ✅ Feature 1: Configuração Essencial (100% Concluída)
 - ✅ Configuração inicial do projeto Spring Boot
 - ✅ Modelagem de entidade principal (Funcionario)
 - ✅ Implementação de operações CRUD básicas em memória
@@ -97,12 +101,12 @@ Servico (Entidade Independente)
 - ✅ Implementação do primeiro Loader
 - ✅ Integração com Spring Boot e Maven
 
-### Feature 2: Expansão do Modelo de Domínio ✅
+### ✅ Feature 2: Expansão do Modelo de Domínio (100% Concluída)
 - ✅ **Estrutura do modelo de domínio expandido**
   - ✅ Classe Mãe: Pessoa (abstrata) com 4+ atributos
   - ✅ Classe Filha 1: Funcionario (extends Pessoa) com atributos específicos
   - ✅ Classe Filha 2: Cliente (extends Pessoa) com atributos específicos  
-  - ✅ Classe de Associação: Endereco (oneToOne com Funcionario)
+  - ✅ Classe de Associação: Endereco (ManyToOne com Funcionario)
 - ✅ **Tratamento de exceções customizadas**
   - ✅ RecursoInvalidoException para regras de negócio
   - ✅ RecursoNaoEncontradoException para recursos inexistentes
@@ -116,17 +120,17 @@ Servico (Entidade Independente)
 - ✅ **Camada de serviço completa**
   - ✅ FuncionarioService: CRUD + inativar()
   - ✅ ClienteService: CRUD + atualizarFidelidade()
-  - ✅ ServicoService: CRUD básico
+  - ✅ ServicoService: CRUD completo
 - ✅ **Camada de controle (API REST)**
   - ✅ FuncionarioController: GET, POST, PUT, PATCH, DELETE
   - ✅ ClienteController: GET, POST, PUT, PATCH, DELETE  
-  - ✅ ServicoController: GET, POST, PUT básico
+  - ✅ ServicoController: GET, POST, PUT, DELETE
 - ✅ **Testes com Postman**
   - ✅ Coleções preparadas para todos os endpoints
   - ✅ RequestBody e PathVariable implementados
   - ✅ Validação de todos os verbos HTTP
 
-### Feature 3: Persistência com Banco de Dados 🚧 (~70% Implementada)
+### ✅ Feature 3: Persistência com Banco de Dados (100% Concluída)
 - ✅ **Dependências essenciais (pom.xml)**
   - ✅ Spring Boot Starter Data JPA
   - ✅ H2 Database
@@ -135,38 +139,64 @@ Servico (Entidade Independente)
   - ✅ Configuração H2 completa (jdbc:h2:~/databaseCochito)
   - ✅ Console H2 habilitado (/h2-console)
   - ✅ Configuração JPA/Hibernate (ddl-auto=create, show-sql=true)
-- 🚧 **Mapeamento das entidades com JPA (Parcial)**
-  - ✅ @Entity em Funcionario e Endereco
+- ✅ **Mapeamento das entidades com JPA**
+  - ✅ @Entity em Funcionario, Cliente e Servico
   - ✅ @MappedSuperclass em Pessoa (estratégia de herança)
   - ✅ @Id e @GeneratedValue para chaves primárias
   - ✅ Relacionamento @ManyToOne entre Funcionario e Endereco
   - ✅ Cascade ALL para persistência automática de endereços
-  - ❌ Cliente ainda é POJO (não tem @Entity)
-  - ❌ Servico ainda é POJO (não tem @Entity)
 - ✅ **Bean Validation implementado**
   - ✅ @NotNull, @NotBlank, @Email em Pessoa
   - ✅ @Size para validação de tamanho de strings
   - ✅ @Pattern para validação de CPF e telefone
-  - ✅ @Min para validação de salário mínimo
+  - ✅ @Min para validação de salário e preço mínimos
   - ✅ @Valid para validação em cascata
-- 🚧 **Criação de repositórios com Spring Data JPA (Parcial)**
+- ✅ **Criação de repositórios com Spring Data JPA**
   - ✅ FuncionarioRepository extends JpaRepository<Funcionario, Integer>
-  - ❌ ClienteRepository não existe
-  - ❌ ServicoRepository não existe
-- 🚧 **Atualização da camada de serviço (Parcial)**
+  - ✅ ClienteRepository extends JpaRepository<Cliente, Integer>
+  - ✅ ServicoRepository extends JpaRepository<Servico, Integer>
+- ✅ **Atualização da camada de serviço**
   - ✅ FuncionarioService migrado para JpaRepository
-  - ✅ Remoção de Map e AtomicInteger no FuncionarioService
-  - ❌ ClienteService ainda usa Map/ConcurrentHashMap
-  - ❌ ServicoService ainda usa Map/ConcurrentHashMap
+  - ✅ ClienteService migrado para JpaRepository
+  - ✅ ServicoService migrado para JpaRepository
+  - ✅ Remoção completa de Map/ConcurrentHashMap
 - ✅ **Refinamento da API REST com ResponseEntity**
-  - ✅ FuncionarioController: Status HTTP apropriados (201, 200, 204, 400, 404)
-  - ✅ ClienteController: ResponseEntity implementado
-  - 🚧 ServicoController: ResponseEntity parcialmente implementado
+  - ✅ Todos os Controllers: Status HTTP apropriados (201, 200, 204, 400, 404)
+  - ✅ Tratamento adequado de códigos de resposta
 - ✅ **Tratamento de exceções refinado**
   - ✅ GlobalExceptionHandler com ResponseEntity
   - ✅ Tratamento de MethodArgumentNotValidException
   - ✅ ErrorResponse e ValidationErrorResponse estruturados
   - ✅ Timestamps e URIs de erro incluídos
+
+### ✅ Feature 4: Robustez, Validação Avançada e Relacionamentos Complexos (100% Concluída)
+- ✅ **Bean Validation Avançado**
+  - ✅ Validações sofisticadas implementadas (@Min, @Max, @Pattern, @Email, @Size)
+  - ✅ Validações em todas as entidades (Pessoa, Funcionario, Cliente, Servico, Endereco)
+  - ✅ Feedback estruturado ao cliente via GlobalExceptionHandler
+  - ✅ ValidationErrorResponse com detalhes dos campos que falharam
+- ✅ **Tratamento Global de Exceções Robusto**
+  - ✅ @ControllerAdvice e @ExceptionHandler implementados
+  - ✅ Mapeamento completo de exceções:
+    - ✅ IllegalArgumentException → 404 NOT_FOUND
+    - ✅ RecursoNaoEncontradoException → 404 RESOURCE_NOT_FOUND
+    - ✅ RecursoInvalidoException → 400 INVALID_DATA
+    - ✅ MethodArgumentNotValidException → 400 VALIDATION_ERROR
+  - ✅ Estrutura de erro padronizada (JSON com timestamp, status, error, message, path)
+  - ✅ Classes de resposta especializadas: ErrorResponse e ValidationErrorResponse
+- ✅ **Implementação de Relacionamento One-to-Many**
+  - ✅ Relacionamento @ManyToOne entre Funcionario e Endereco implementado
+  - ✅ Cascade ALL para operações em cascata
+  - ✅ Validação @Valid para objetos relacionados
+- ✅ **População de Dados via Loaders**
+  - ✅ Arquivos texto dedicados: funcionario.txt, cliente.txt, servico.txt
+  - ✅ Loaders específicos: FuncionarioLoader, ClienteLoader, ServicoLoader
+  - ✅ Associação dinâmica entre Funcionario e Endereco
+  - ✅ Ordem correta de execução dos loaders
+- ✅ **Uso Completo de Repositórios JPA**
+  - ✅ Spring Data JPA em todas as entidades
+  - ✅ Métodos de consulta automáticos (findById, findAll, save, delete)
+  - ✅ Demonstração de funcionalidades JPA em serviços e controladores
 
 ## 🗄️ Banco de Dados
 
@@ -208,6 +238,28 @@ CREATE TABLE funcionario (
 );
 ```
 
+**CLIENTE**
+```sql
+CREATE TABLE cliente (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    telefone VARCHAR(15) NOT NULL,
+    fidelidade VARCHAR(20) NOT NULL
+);
+```
+
+**SERVICO**
+```sql
+CREATE TABLE servico (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    preco DOUBLE NOT NULL,
+    descricao VARCHAR(500) NOT NULL
+);
+```
+
 **ENDERECO**
 ```sql
 CREATE TABLE endereco (
@@ -246,6 +298,7 @@ CREATE TABLE endereco (
 - `GET /api/servicos/{id}` - Busca serviço por ID
 - `POST /api/servicos` - Cria novo serviço (201 CREATED)
 - `PUT /api/servicos/{id}` - Altera serviço completo (200 OK)
+- `DELETE /api/servicos/{id}` - Remove serviço (204 NO CONTENT)
 
 ## 🚦 Como Executar
 
@@ -293,7 +346,7 @@ O projeto utiliza arquivos texto para carga inicial dos dados:
 
 **funcionario.txt:**
 ```
-Nome;Matricula;Salario;EhAtivo;CPF;Email;Telefone;CEP;Localidade
+Nome;Email;CPF;Telefone;Matricula;Salario;EhAtivo;CEP;Logradouro;Complemento;Unidade;Bairro;Localidade;UF;Estado
 ```
 
 **cliente.txt:**
@@ -308,7 +361,7 @@ Titulo;Preco;Descricao
 
 ## 🧪 Testando a API
 
-Recomenda-se o uso do **Postman** para testar os endpoints da API. Importe a coleção de requisições ou crie manualmente as seguintes requisições:
+Recomenda-se o uso do **Postman** para testar os endpoints da API. 
 
 ### Exemplo de teste POST (Funcionário com Validação):
 ```http
@@ -325,7 +378,11 @@ Content-Type: application/json
     "ativo": true,
     "endereco": {
         "cep": "01234-567",
-        "localidade": "São Paulo"
+        "logradouro": "Rua das Flores",
+        "bairro": "Centro",
+        "localidade": "São Paulo",
+        "uf": "SP",
+        "estado": "São Paulo"
     }
 }
 ```
@@ -349,84 +406,107 @@ Content-Type: application/json
 }
 ```
 
-## 🎯 Próximas Features
+## 🏛️ Padrões e Boas Práticas Implementadas
 
-### Feature 4: A Definir (Aguardando Especificação)
-- 🔮 **Especificação pendente**
-  - [ ] *Aguardando definição dos requisitos*
-  - [ ] *Conceitos e tecnologias a serem aplicados*
-  - [ ] *Entregáveis e objetivos da feature*
-
-### 🎯 Roadmap Completo
-1. ✅ **Feature 1**: Fundação e CRUD básico 
-2. ✅ **Feature 2**: Expansão do modelo e robustez
-3. ✅ **Feature 3**: Persistência JPA e refinamento da API
-4. 🔮 **Feature 4**: *Especificação em desenvolvimento*
-
-## 🏛️ Padrões e Boas Práticas
-
+- **Arquitetura em Camadas**: Controller, Service, Repository bem definidas
 - **Injeção de Dependência**: Uso de injeção por construtor
-- **Tratamento de Exceções**: Exceções customizadas para regras de negócio
-- **Separação de Responsabilidades**: Camadas bem definidas
+- **Tratamento de Exceções**: GlobalExceptionHandler centralizado
 - **Interface Genérica**: `CrudService<T,ID>` para padronização
-- **Thread Safety**: Uso de `ConcurrentHashMap` para armazenamento em memória
 - **Bean Validation**: Validações declarativas com annotations
 - **JPA/Hibernate**: Mapeamento objeto-relacional automático
-- **Response Entity**: Controle granular de respostas HTTP
-- **Global Exception Handling**: Tratamento centralizado de exceções
+- **Response Entity**: Controle granular de respostas HTTP com códigos apropriados
+- **Estratégia de Herança**: @MappedSuperclass para Pessoa
+- **Relacionamentos JPA**: @ManyToOne com cascade configurado
+- **Transacional**: @Transactional para operações que modificam dados
+- **Validação em Cascata**: @Valid para objetos relacionados
 
-## 📊 Status de Entrega por Feature
+## 📊 Status Final das Features
 
 | Feature | Status | Entregáveis | Progresso |
 |---------|---------|-------------|-----------|
 | **Feature 1** | ✅ **Concluída** | Configuração base + CRUD simples | 100% |
 | **Feature 2** | ✅ **Concluída** | Modelo expandido + CRUD completo | 100% |
-| **Feature 3** | 🚧 **70% Implementada** | Persistência JPA + API refinada | 70% |
-| **Feature 4** | 🔮 **A definir** | *Aguardando especificação* | 0% |
+| **Feature 3** | ✅ **Concluída** | Persistência JPA + API refinada | 100% |
+| **Feature 4** | ✅ **Concluída** | Validação avançada + Tratamento global | 100% |
 
-### Implementações da Feature 3 🚧 (70% Concluída)
+### 🎯 Projeto 100% Implementado ✅
 
-#### ✅ Totalmente Implementado
-- **Dependências JPA e H2**: Completas no pom.xml
-- **Configuração do banco**: application.properties com H2 completo
-- **Mapeamento JPA do Funcionario**: @Entity, relacionamentos, validações
-- **Repository do Funcionario**: Spring Data JPA implementado
-- **Bean Validation**: Completo com @Valid, @NotNull, @Email, @Pattern, etc.
-- **Global Exception Handler**: Tratamento robusto de erros
-- **ResponseEntity**: Implementado na maioria dos controllers
+**Todas as funcionalidades foram entregues com sucesso:**
 
-#### ❌ Ainda Pendente (Para atingir 100%)
-- **Cliente/Servico como @Entity**: Ainda são POJOs simples
-- **Repositories faltando**: ClienteRepository e ServicoRepository
-- **Services não migrados**: Cliente e Servico ainda usam Map em memória
-- **API incompleta**: ServicoController sem DELETE endpoint
+#### ✅ Arquitetura Completa
+- **Persistência Real**: H2 Database com JPA/Hibernate
+- **Validação Robusta**: Bean Validation em todas as entidades
+- **Tratamento de Erros**: GlobalExceptionHandler com respostas estruturadas
+- **API RESTful**: Endpoints completos com códigos HTTP apropriados
 
-### Status Atual: Arquitetura Híbrida
-- **Funcionario**: 100% JPA (persistência real no H2)
-- **Cliente/Servico**: Ainda em memória (Map + AtomicInteger)
-- **Banco H2**: Funcional com console disponível
-- **Validações**: Bean Validation ativo
-- **API REST**: ResponseEntity implementado
+#### ✅ Modelo de Domínio Robusto
+- **Herança**: Pessoa como @MappedSuperclass
+- **Relacionamentos**: @ManyToOne entre Funcionario e Endereco
+- **Entidades Completas**: Funcionario, Cliente, Servico, Endereco
+- **Validações**: Todas as regras de negócio implementadas
 
----
+#### ✅ Funcionalidades Avançadas
+- **CRUD Completo**: Create, Read, Update, Delete para todas as entidades
+- **Operações Especiais**: inativar(), atualizarFidelidade()
+- **Carga de Dados**: Loaders automáticos a partir de arquivos texto
+- **Console H2**: Interface para visualização dos dados
 
-## 👨‍💻 Desenvolvimento
+## 🎓 Conceitos Aplicados - Aprendizado Consolidado
 
-Este projeto está sendo desenvolvido seguindo metodologia ágil com entregas incrementais por features, permitindo validação contínua e aplicação progressiva dos conceitos aprendidos.
+Este projeto demonstra o domínio completo dos seguintes conceitos:
 
-**Conceitos aplicados na Feature 3:**
+### **Fundamentos Spring Boot**
+- Configuração de projeto com Spring Initializr
+- Injeção de Dependência e Inversão de Controle
+- Componentes (@Component, @Service, @Repository, @RestController)
+- ApplicationRunner para inicialização de dados
+
+### **Arquitetura e Design Patterns**
+- Padrão MVC (Model-View-Controller)
+- Separação de responsabilidades em camadas
+- Interface CrudService genérica para padronização
+- Tratamento centralizado de exceções
+
+### **Orientação a Objetos**
+- Herança: classe abstrata Pessoa
+- Polimorfismo: método abstrato obterTipo()
+- Encapsulamento: getters/setters
+- Associação: relacionamento entre classes
+
+### **Persistência e Banco de Dados**
 - Spring Data JPA e Hibernate
-- Bean Validation
-- Estratégias de herança JPA
-- Relacionamentos JPA (@ManyToOne, Cascade)
-- ResponseEntity e Status HTTP
-- Global Exception Handling
+- Mapeamento objeto-relacional com annotations
+- Estratégias de herança (@MappedSuperclass)
+- Relacionamentos (@ManyToOne, cascade)
 - H2 Database em memória
 
-## 📧 Contato
+### **Validação e Tratamento de Erros**
+- Bean Validation (@NotNull, @NotBlank, @Size, @Pattern, @Email, @Min)
+- Exceções customizadas (RecursoInvalidoException, RecursoNaoEncontradoException)
+- GlobalExceptionHandler com @ControllerAdvice
+- ResponseEntity com códigos HTTP apropriados
 
-Projeto desenvolvido como parte do curso de Pós-graduação MIT em Engenharia de Software - Instituto INFNET.
+### **API RESTful**
+- Verbos HTTP (GET, POST, PUT, PATCH, DELETE)
+- @PathVariable e @RequestBody
+- Códigos de status HTTP (200, 201, 204, 400, 404)
+- Estrutura de respostas JSON padronizada
 
 ---
 
-**Status do Projeto**: 🚧 Feature 3 - 70% Implementada | 🔮 Feature 4 A Definir
+## 👨‍💻 Conclusão do Projeto
+
+Este projeto foi desenvolvido com sucesso seguindo metodologia ágil com entregas incrementais por features. **Todas as 4 features foram implementadas completamente**, demonstrando o domínio dos conceitos de desenvolvimento avançado com Spring Boot.
+
+**Principais conquistas:**
+- ✅ Arquitetura sólida e bem estruturada
+- ✅ Persistência real com banco de dados
+- ✅ Validações robustas e tratamento de erros
+- ✅ API RESTful completa e funcional
+- ✅ Aplicação das melhores práticas de desenvolvimento
+
+**Projeto desenvolvido como parte do curso de Pós-graduação MIT em Engenharia de Software - Instituto INFNET.**
+
+---
+
+**Status Final**: 🎉 **PROJETO 100% CONCLUÍDO** - Todas as Features Implementadas com Sucesso!
