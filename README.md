@@ -2,6 +2,16 @@
 
 Uma API REST desenvolvida em Java com Spring Boot para gestão e controle de serviços, funcionários e clientes com persistência em banco de dados.
 
+**Link do repositório:**: [https://github.com/Adriel-Cochito/cochitoapi](https://github.com/Adriel-Cochito/cochitoapi)
+
+**Collection Postman:**: [https://api.postman.com/collections/33558167-802ea8c2-aeea-42c5-bcd2-81c4329b7c7b?access_key=PMAT-01K3Q35BC53066TFP2V3VFJRXT](https://api.postman.com/collections/33558167-802ea8c2-aeea-42c5-bcd2-81c4329b7c7b?access_key=PMAT-01K3Q35BC53066TFP2V3VFJRXT)
+
+- 📋 Aluno: Adriel Henrique Borges Cochito
+- 📋 Desenvolvimento de aplicações Java com Spring Boot [25E3_2]
+- 📋 MIT Engenharia de Software (JAVA)
+
+
+
 ## 📋 Sobre o Projeto
 
 Este projeto faz parte da disciplina "Desenvolvimento Avançado com Spring e Microsserviços" da Pós-graduação MIT em Engenharia de Software. A aplicação implementa um sistema completo de CRUD (Create, Read, Update, Delete) para gestão de entidades de negócio, seguindo as melhores práticas de desenvolvimento com Spring Framework.
