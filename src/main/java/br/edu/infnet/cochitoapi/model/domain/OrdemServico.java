@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -46,6 +47,11 @@ public class OrdemServico {
     @Pattern(regexp = "PENDENTE|EM_ANDAMENTO|CONCLUIDO|CANCELADO", 
              message = "Status deve ser: PENDENTE, EM_ANDAMENTO, CONCLUIDO ou CANCELADO")
     private String status;
+    
+    
+    @Transient
+    private DistanciaQueryResult distancia;
+
 
 
     @Override
@@ -112,5 +118,15 @@ public class OrdemServico {
     public void setStatus(String status) {
         this.status = status;
     }
+
+	public DistanciaQueryResult getDistancia() {
+		return distancia;
+	}
+
+	public void setDistancia(DistanciaQueryResult distancia) {
+		this.distancia = distancia;
+	}
+
+    
 
 }
