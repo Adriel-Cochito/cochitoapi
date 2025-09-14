@@ -1,4 +1,4 @@
-João da Silva;123.456.789-00;joao@email.com;(11) 99999-1111;GOLD
-Maria Santos;987.654.321-00;maria@email.com;(11) 99999-2222;SILVER
-Pedro Oliveira;456.789.123-00;pedro@email.com;(11) 99999-3333;BRONZE
-Ana Costa;789.123.456-00;ana@email.com;(11) 99999-4444;PLATINUM
+João da Silva;123.456.789-00;joao@email.com;(11) 99999-1111;GOLD;01234-567;Rua das Flores, 123;Apto 45;;Centro;São Paulo;SP;São Paulo
+Maria Santos;987.654.321-00;maria@email.com;(11) 99999-2222;SILVER;04567-890;Av. Paulista, 1000;Sala 201;;Bela Vista;São Paulo;SP;São Paulo
+Pedro Oliveira;456.789.123-00;pedro@email.com;(11) 99999-3333;BRONZE;02345-678;Rua Augusta, 456;;;Consolação;São Paulo;SP;São Paulo
+Ana Costa;789.123.456-00;ana@email.com;(11) 99999-4444;PLATINUM;03456-789;Rua Oscar Freire, 789;Casa;;Jardim Paulista;São Paulo;SP;São Paulo
