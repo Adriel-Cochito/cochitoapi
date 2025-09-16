@@ -1,18 +1,99 @@
-# CochitAPI - Sistema de Gestão e Controle de Serviços
+# CochitoApi - Sistema de Gestão de Serviços
+
+## 🆕 Feature 02 - Integração com Cálculo de Distância (Novidade!)
+
+### **🚀 Implementação Recente: Consumo de APIs Externas**
+
+O projeto **cochitoApi** foi **atualizado** para consumir o serviço de cálculo de distância do projeto **cochitoServicoApi** da disciplina atual. Esta implementação demonstra **comunicação entre microserviços** e **enriquecimento automático de dados**.
+
+#### **✅ O que foi Implementado na Feature 02:**
+
+##### **1. Cliente Feign para Comunicação Externa**
+```java
+@FeignClient(name = "distanciaClient", url = "${cochitoservicoapi.url}")
+public interface DistanciaFeignClient {
+    @GetMapping("/api/servicos/distancia")
+    DistanciaQueryResult calcularDistancia(
+        @RequestParam("cepOrigem") String cepOrigem,
+        @RequestParam("cepDestino") String cepDestino
+    );
+}
+```
+
+##### **2. Serviço de Integração**
+```java
+@Service
+public class DistanciaService {
+    public DistanciaQueryResult consultarDistancia(String cepOrigem, String cepCliente) {
+        return distanciaFeignClient.calcularDistancia(cepOrigem, cepCliente);
+    }
+}
+```
+
+##### **3. Controller para Exposição**
+```java
+@RestController
+@RequestMapping("/api/distancia")
+public class DistanciaController {
+    @GetMapping("/consulta/{cepOrigem}/{cepCliente}")
+    public ResponseEntity<DistanciaQueryResult> consultarDistancia(
+        @PathVariable String cepOrigem, @PathVariable String cepCliente) {
+        // Implementação que consome cochitoServicoApi
+    }
+}
+```
+
+##### **4. Enriquecimento Automático de Ordem de Serviço**
+- **OrdemServicoService** foi modificado para incluir automaticamente a distância entre funcionário e cliente
+- Campo `@Transient` adicionado em **OrdemServico** para não persistir no banco
+- **Consulta automática** sempre que uma ordem é recuperada por ID
+
+#### **🎯 Funcionalidades da Feature 02:**
+
+- ✅ **Endpoint direto**: `GET /api/distancia/consulta/{origem}/{destino}`
+- ✅ **Enriquecimento automático**: Ordens de serviço incluem distância funcionário-cliente
+- ✅ **Integração robusta**: Tratamento de erros e fallback
+- ✅ **Configuração externa**: URL do cochitoServicoApi via properties
+
+#### **📊 Exemplo de Resposta Enriquecida:**
+```json
+{
+    "id": 1,
+    "cliente": { "nome": "Maria Santos", "endereco": { "cep": "38020-433" } },
+    "funcionario": { "nome": "João Silva", "endereco": { "cep": "38065-065" } },
+    "servico": { "titulo": "Desenvolvimento Web" },
+    "status": "EM_ANDAMENTO",
+    "distancia": {
+        "cepOrigem": "38065065",
+        "cepDestino": "38020433",
+        "distanciaKm": 2.66,
+        "tempoMinutos": 3.39,
+        "enderecoOrigem": "Rua Governador Valadares",
+        "enderecoDestino": "Avenida Santa Beatriz da Silva"
+    }
+}
+```
+
+#### **⚙️ Configuração Necessária:**
+```properties
+# application.properties
+cochitoservicoapi.url=http://localhost:8081
+server.port=8080
+```
+
+---
+
+## 📋 Sobre o Projeto
 
 Uma API REST desenvolvida em Java com Spring Boot para gestão e controle de serviços, funcionários e clientes com persistência em banco de dados.
 
-**Link do repositório:**: [https://github.com/Adriel-Cochito/cochitoapi](https://github.com/Adriel-Cochito/cochitoapi)
+**Link do repositório**: [https://github.com/Adriel-Cochito/cochitoapi](https://github.com/Adriel-Cochito/cochitoapi)
 
-**Collection Postman:**: [https://api.postman.com/collections/33558167-802ea8c2-aeea-42c5-bcd2-81c4329b7c7b?access_key=PMAT-01K3Q35BC53066TFP2V3VFJRXT](https://api.postman.com/collections/33558167-802ea8c2-aeea-42c5-bcd2-81c4329b7c7b?access_key=PMAT-01K3Q35BC53066TFP2V3VFJRXT)
+**Collection Postman**: [Acessar Collection](https://api.postman.com/collections/33558167-802ea8c2-aeea-42c5-bcd2-81c4329b7c7b?access_key=PMAT-01K3Q35BC53066TFP2V3VFJRXT)
 
-- 📋 Aluno: Adriel Henrique Borges Cochito
-- 📋 Desenvolvimento de aplicações Java com Spring Boot [25E3_2]
-- 📋 MIT Engenharia de Software (JAVA)
-
-
-
-## 📋 Sobre o Projeto
+- 📋 **Aluno**: Adriel Henrique Borges Cochito
+- 📋 **Disciplina**: Desenvolvimento de aplicações Java com Spring Boot [25E3_2]
+- 📋 **Curso**: MIT Engenharia de Software (JAVA)
 
 Este projeto faz parte da disciplina "Desenvolvimento Avançado com Spring e Microsserviços" da Pós-graduação MIT em Engenharia de Software. A aplicação implementa um sistema completo de CRUD (Create, Read, Update, Delete) para gestão de entidades de negócio, seguindo as melhores práticas de desenvolvimento com Spring Framework.
 
@@ -25,6 +106,7 @@ Este projeto faz parte da disciplina "Desenvolvimento Avançado com Spring e Mic
 - **Spring Web**
 - **Spring Data JPA**
 - **Spring Boot Validation**
+- **Spring Cloud OpenFeign** *(Novidade Feature 02)*
 - **H2 Database**
 - **Maven**
 - **RESTful API**
@@ -37,6 +119,7 @@ Este projeto faz parte da disciplina "Desenvolvimento Avançado com Spring e Mic
 src/main/java/br/edu/infnet/cochitoapi/
 ├── controller/          # Camada de controle (REST Controllers)
 ├── model/
+│   ├── clients/        # 🆕 Feign Clients (Feature 02)
 │   ├── domain/         # Entidades de domínio
 │   │   └── exceptions/ # Exceções customizadas e handlers
 │   ├── repository/     # Interfaces de repositório JPA
@@ -53,6 +136,7 @@ O projeto segue o padrão MVC (Model-View-Controller) com separação clara de r
 - **Service**: Contém a lógica de negócio e validações
 - **Repository**: Camada de acesso a dados com Spring Data JPA
 - **Model**: Define as entidades de domínio e suas relações
+- **🆕 Clients**: Comunicação com serviços externos via Feign *(Feature 02)*
 
 ### Modelo de Domínio
 
@@ -63,6 +147,7 @@ Pessoa (Classe Abstrata - @MappedSuperclass)
 
 Endereco (@Entity - Classe de Associação)
 Servico (@Entity - Entidade Independente)
+OrdemServico (@Entity - Núcleo do sistema) + distancia (@Transient) 🆕
 ```
 
 ## 📊 Entidades
@@ -89,434 +174,274 @@ Servico (@Entity - Entidade Independente)
 - `preco`: double (mínimo: 0)
 - `descricao`: String (validado: 10-500 caracteres)
 
+### OrdemServico (@Entity) - ⭐ Atualizada na Feature 02
+- `id`: Integer (PK, auto-increment)
+- `cliente`: Cliente (@ManyToOne)
+- `funcionario`: Funcionario (@ManyToOne)
+- `servico`: Servico (@ManyToOne)
+- `dataCriacao`: LocalDateTime
+- `dataExecucao`: LocalDateTime
+- `status`: String (validado: enum valores)
+- `distancia`: DistanciaQueryResult (**@Transient** - 🆕 Feature 02)
+
+### 🆕 DistanciaQueryResult (Feature 02)
+- `cepOrigem`: String
+- `cepDestino`: String
+- `enderecoOrigem`: String
+- `bairroOrigem`: String
+- `ufOrigem`: String
+- `enderecoDestino`: String
+- `bairroDestino`: String
+- `ufDestino`: String
+- `distanciaKm`: double
+- `tempoMinutos`: double
+
 ### Endereco (@Entity)
 - `id`: Integer (PK, auto-increment)
 - `cep`: String (validado: formato XXXXX-XXX)
-- `logradouro`: String (validado: 3-100 caracteres)
-- `complemento`: String
-- `unidade`: String
-- `bairro`: String (validado: 3-50 caracteres)
-- `localidade`: String (validado: 3-50 caracteres)
-- `uf`: String (validado: 2 caracteres)
-- `estado`: String (validado: 3-50 caracteres)
+- `logradouro`: String (validado: 5-100 caracteres)
+- `complemento`: String (opcional, max: 50 caracteres)
+- `unidade`: String (opcional, max: 10 caracteres)
+- `bairro`: String (validado: 2-50 caracteres)
+- `localidade`: String (validado: 2-50 caracteres)
+- `uf`: String (validado: exatamente 2 caracteres)
+- `estado`: String (validado: 4-20 caracteres)
 
-## 🛠️ Funcionalidades Implementadas
+## 🛠️ Endpoints Principais
 
-### ✅ Feature 1: Configuração Essencial (100% Concluída)
-- ✅ Configuração inicial do projeto Spring Boot
-- ✅ Modelagem de entidade principal (Funcionario)
-- ✅ Implementação de operações CRUD básicas em memória
-- ✅ API REST simples com carregamento inicial de dados
-- ✅ Criação da primeira classe Controller
-- ✅ Implementação do primeiro Loader
-- ✅ Integração com Spring Boot e Maven
+### 🆕 **Feature 02 - Cálculo de Distância**
+```http
+GET /api/distancia/consulta/{cepOrigem}/{cepDestino}
+```
 
-### ✅ Feature 2: Expansão do Modelo de Domínio (100% Concluída)
-- ✅ **Estrutura do modelo de domínio expandido**
-  - ✅ Classe Mãe: Pessoa (abstrata) com 4+ atributos
-  - ✅ Classe Filha 1: Funcionario (extends Pessoa) com atributos específicos
-  - ✅ Classe Filha 2: Cliente (extends Pessoa) com atributos específicos  
-  - ✅ Classe de Associação: Endereco (ManyToOne com Funcionario)
-- ✅ **Tratamento de exceções customizadas**
-  - ✅ RecursoInvalidoException para regras de negócio
-  - ✅ RecursoNaoEncontradoException para recursos inexistentes
-  - ✅ GlobalExceptionHandler para tratamento centralizado
-- ✅ **Interface CrudService<T,ID> atualizada**
-  - ✅ Contrato completo: incluir, alterar, buscarPorId, listarTodos, excluir
-- ✅ **Gerenciamento de dados iniciais (Loaders)**
-  - ✅ FuncionarioLoader: carrega funcionários e endereços
-  - ✅ ClienteLoader: carrega clientes
-  - ✅ ServicoLoader: carrega serviços
-- ✅ **Camada de serviço completa**
-  - ✅ FuncionarioService: CRUD + inativar()
-  - ✅ ClienteService: CRUD + atualizarFidelidade()
-  - ✅ ServicoService: CRUD completo
-- ✅ **Camada de controle (API REST)**
-  - ✅ FuncionarioController: GET, POST, PUT, PATCH, DELETE
-  - ✅ ClienteController: GET, POST, PUT, PATCH, DELETE  
-  - ✅ ServicoController: GET, POST, PUT, DELETE
-- ✅ **Testes com Postman**
-  - ✅ Coleções preparadas para todos os endpoints
-  - ✅ RequestBody e PathVariable implementados
-  - ✅ Validação de todos os verbos HTTP
+### **Funcionários**
+```http
+GET    /api/funcionarios           # Listar todos
+GET    /api/funcionarios/{id}      # Buscar por ID
+POST   /api/funcionarios           # Criar novo
+PUT    /api/funcionarios/{id}      # Atualizar
+DELETE /api/funcionarios/{id}      # Excluir
+```
 
-### ✅ Feature 3: Persistência com Banco de Dados (100% Concluída)
-- ✅ **Dependências essenciais (pom.xml)**
-  - ✅ Spring Boot Starter Data JPA
-  - ✅ H2 Database
-  - ✅ Spring Boot Validation
-- ✅ **Configuração do banco de dados (application.properties)**
-  - ✅ Configuração H2 completa (jdbc:h2:~/databaseCochito)
-  - ✅ Console H2 habilitado (/h2-console)
-  - ✅ Configuração JPA/Hibernate (ddl-auto=create, show-sql=true)
-- ✅ **Mapeamento das entidades com JPA**
-  - ✅ @Entity em Funcionario, Cliente e Servico
-  - ✅ @MappedSuperclass em Pessoa (estratégia de herança)
-  - ✅ @Id e @GeneratedValue para chaves primárias
-  - ✅ Relacionamento @ManyToOne entre Funcionario e Endereco
-  - ✅ Cascade ALL para persistência automática de endereços
-- ✅ **Bean Validation implementado**
-  - ✅ @NotNull, @NotBlank, @Email em Pessoa
-  - ✅ @Size para validação de tamanho de strings
-  - ✅ @Pattern para validação de CPF e telefone
-  - ✅ @Min para validação de salário e preço mínimos
-  - ✅ @Valid para validação em cascata
-- ✅ **Criação de repositórios com Spring Data JPA**
-  - ✅ FuncionarioRepository extends JpaRepository<Funcionario, Integer>
-  - ✅ ClienteRepository extends JpaRepository<Cliente, Integer>
-  - ✅ ServicoRepository extends JpaRepository<Servico, Integer>
-- ✅ **Atualização da camada de serviço**
-  - ✅ FuncionarioService migrado para JpaRepository
-  - ✅ ClienteService migrado para JpaRepository
-  - ✅ ServicoService migrado para JpaRepository
-  - ✅ Remoção completa de Map/ConcurrentHashMap
-- ✅ **Refinamento da API REST com ResponseEntity**
-  - ✅ Todos os Controllers: Status HTTP apropriados (201, 200, 204, 400, 404)
-  - ✅ Tratamento adequado de códigos de resposta
-- ✅ **Tratamento de exceções refinado**
-  - ✅ GlobalExceptionHandler com ResponseEntity
-  - ✅ Tratamento de MethodArgumentNotValidException
-  - ✅ ErrorResponse e ValidationErrorResponse estruturados
-  - ✅ Timestamps e URIs de erro incluídos
+### **Clientes**
+```http
+GET    /api/clientes               # Listar todos
+GET    /api/clientes/{id}          # Buscar por ID
+POST   /api/clientes               # Criar novo
+PUT    /api/clientes/{id}          # Atualizar
+DELETE /api/clientes/{id}          # Excluir
+```
 
-### ✅ Feature 4: Robustez, Validação Avançada e Relacionamentos Complexos (100% Concluída)
-- ✅ **Bean Validation Avançado**
-  - ✅ Validações sofisticadas implementadas (@Min, @Max, @Pattern, @Email, @Size)
-  - ✅ Validações em todas as entidades (Pessoa, Funcionario, Cliente, Servico, Endereco)
-  - ✅ Feedback estruturado ao cliente via GlobalExceptionHandler
-  - ✅ ValidationErrorResponse com detalhes dos campos que falharam
-- ✅ **Tratamento Global de Exceções Robusto**
-  - ✅ @ControllerAdvice e @ExceptionHandler implementados
-  - ✅ Mapeamento completo de exceções:
-    - ✅ IllegalArgumentException → 404 NOT_FOUND
-    - ✅ RecursoNaoEncontradoException → 404 RESOURCE_NOT_FOUND
-    - ✅ RecursoInvalidoException → 400 INVALID_DATA
-    - ✅ MethodArgumentNotValidException → 400 VALIDATION_ERROR
-  - ✅ Estrutura de erro padronizada (JSON com timestamp, status, error, message, path)
-  - ✅ Classes de resposta especializadas: ErrorResponse e ValidationErrorResponse
-- ✅ **Implementação de Relacionamento One-to-Many**
-  - ✅ Relacionamento @ManyToOne entre Funcionario e Endereco implementado
-  - ✅ Cascade ALL para operações em cascata
-  - ✅ Validação @Valid para objetos relacionados
-- ✅ **População de Dados via Loaders**
-  - ✅ Arquivos texto dedicados: funcionario.txt, cliente.txt, servico.txt
-  - ✅ Loaders específicos: FuncionarioLoader, ClienteLoader, ServicoLoader
-  - ✅ Associação dinâmica entre Funcionario e Endereco
-  - ✅ Ordem correta de execução dos loaders
-- ✅ **Uso Completo de Repositórios JPA**
-  - ✅ Spring Data JPA em todas as entidades
-  - ✅ Métodos de consulta automáticos (findById, findAll, save, delete)
-  - ✅ Demonstração de funcionalidades JPA em serviços e controladores
+### **Serviços**
+```http
+GET    /api/servicos               # Listar todos
+GET    /api/servicos/{id}          # Buscar por ID
+POST   /api/servicos               # Criar novo
+PUT    /api/servicos/{id}          # Atualizar
+DELETE /api/servicos/{id}          # Excluir
+```
 
-## 🗄️ Banco de Dados
+### **Ordens de Serviço** - ⭐ Atualizada na Feature 02
+```http
+GET    /api/ordens-servico         # Listar todas
+GET    /api/ordens-servico/{id}    # Buscar por ID (🆕 com distância automática)
+POST   /api/ordens-servico         # Criar nova
+PUT    /api/ordens-servico/{id}    # Atualizar
+DELETE /api/ordens-servico/{id}    # Excluir
 
-### Configuração H2 
+# Query Methods (Feature 4)
+GET    /api/ordens-servico/status/{status}
+GET    /api/ordens-servico/cliente/{clienteId}/status/{status}
+GET    /api/ordens-servico/funcionario/{funcionarioId}/status/{status}
+GET    /api/ordens-servico/periodo?inicio={data}&fim={data}
+GET    /api/ordens-servico/servico-titulo/{titulo}
+GET    /api/ordens-servico/cliente-nome/{nome}
+GET    /api/ordens-servico/cliente-cpf/{cpf}
+GET    /api/ordens-servico/count/status/{status}
+GET    /api/ordens-servico/pendentes/periodo?inicio={data}&fim={data}
+```
+
+## 📝 Exemplos de Uso
+
+### 🆕 **Testar Feature 02 - Cálculo de Distância**
+
+```bash
+# 1. Consulta direta de distância
+curl -X GET "http://localhost:8080/api/distancia/consulta/38067290/38065065"
+
+# 2. Buscar ordem com distância automática (funcionário + cliente)
+curl -X GET "http://localhost:8080/api/ordens-servico/1"
+```
+
+### **Criar Funcionário**
+```bash
+curl -X POST "http://localhost:8080/api/funcionarios" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "João Silva",
+    "email": "joao@email.com",
+    "cpf": "123.456.789-01",
+    "telefone": "(11) 99999-1111",
+    "matricula": 123,
+    "salario": 5000.0,
+    "ativo": true,
+    "endereco": {
+      "cep": "38065-065",
+      "logradouro": "Rua Governador Valadares",
+      "bairro": "Fabrício",
+      "localidade": "Uberaba",
+      "uf": "MG",
+      "estado": "Minas Gerais"
+    }
+  }'
+```
+
+### **Criar Ordem de Serviço**
+```bash
+curl -X POST "http://localhost:8080/api/ordens-servico" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cliente": {"id": 1},
+    "funcionario": {"id": 1},
+    "servico": {"id": 1},
+    "dataExecucao": "2024-12-01T14:00:00",
+    "status": "PENDENTE"
+  }'
+```
+
+## ⚙️ Configuração e Execução
+
+### **Pré-requisitos**
+- Java 17+
+- Maven 3.6+
+- **cochitoServicoApi** rodando na porta 8081 *(para Feature 02)*
+
+### **Configuração application.properties**
 ```properties
-# application.properties
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.url=jdbc:h2:~/databaseCochito
+# Configuração do Servidor
+spring.application.name=cochitoapi
+server.port=8080
+
+# 🆕 Feature 02 - URL do Serviço Externo
+cochitoservicoapi.url=http://localhost:8081
+
+# Banco H2 (Desenvolvimento)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
 
-spring.jpa.hibernate.ddl-auto=create
+# JPA/Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 
+# Console H2
 spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
+
+# Validação
+spring.jpa.properties.hibernate.validator.apply_to_ddl=false
 ```
 
-**Console H2 disponível em**: http://localhost:8080/h2-console
-
-### Estrutura das Tabelas
-
-**PESSOA (Superclasse - @MappedSuperclass)**
-- Atributos herdados pelas tabelas filhas
-
-**FUNCIONARIO**
-```sql
-CREATE TABLE funcionario (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    cpf VARCHAR(14) NOT NULL,
-    telefone VARCHAR(15) NOT NULL,
-    matricula INTEGER NOT NULL,
-    salario DOUBLE,
-    ativo BOOLEAN,
-    endereco_id INTEGER,
-    FOREIGN KEY (endereco_id) REFERENCES endereco(id)
-);
-```
-
-**CLIENTE**
-```sql
-CREATE TABLE cliente (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    cpf VARCHAR(14) NOT NULL,
-    telefone VARCHAR(15) NOT NULL,
-    fidelidade VARCHAR(20) NOT NULL
-);
-```
-
-**SERVICO**
-```sql
-CREATE TABLE servico (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(100) NOT NULL,
-    preco DOUBLE NOT NULL,
-    descricao VARCHAR(500) NOT NULL
-);
-```
-
-**ENDERECO**
-```sql
-CREATE TABLE endereco (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    cep VARCHAR(9),
-    logradouro VARCHAR(255),
-    complemento VARCHAR(255),
-    unidade VARCHAR(50),
-    bairro VARCHAR(100),
-    localidade VARCHAR(100),
-    uf VARCHAR(2),
-    estado VARCHAR(50)
-);
-```
-
-## 🔌 Endpoints da API
-
-### Funcionários
-- `GET /api/funcionarios` - Lista todos os funcionários
-- `GET /api/funcionarios/{id}` - Busca funcionário por ID
-- `POST /api/funcionarios` - Cria novo funcionário (201 CREATED)
-- `PUT /api/funcionarios/{id}` - Altera funcionário completo (200 OK)
-- `PATCH /api/funcionarios/{id}/inativar` - Inativa funcionário (200 OK)
-- `DELETE /api/funcionarios/{id}` - Remove funcionário (204 NO CONTENT)
-
-### Clientes
-- `GET /api/clientes` - Lista todos os clientes
-- `GET /api/clientes/{id}` - Busca cliente por ID
-- `POST /api/clientes` - Cria novo cliente (201 CREATED)
-- `PUT /api/clientes/{id}` - Altera cliente completo (200 OK)
-- `PATCH /api/clientes/{id}/fidelidade` - Atualiza nível de fidelidade (200 OK)
-- `DELETE /api/clientes/{id}` - Remove cliente (204 NO CONTENT)
-
-### Serviços
-- `GET /api/servicos` - Lista todos os serviços
-- `GET /api/servicos/{id}` - Busca serviço por ID
-- `POST /api/servicos` - Cria novo serviço (201 CREATED)
-- `PUT /api/servicos/{id}` - Altera serviço completo (200 OK)
-- `DELETE /api/servicos/{id}` - Remove serviço (204 NO CONTENT)
-
-## 🚦 Como Executar
-
-### Pré-requisitos
-- Java 17 ou superior
-- Maven 3.6+
-
-### Passos para execução
-
-1. **Clone o repositório**
+### **Executar o Projeto**
 ```bash
-git clone [URL_DO_REPOSITORIO]
-cd cochitoapi
-```
+# 1. Compilar
+mvn clean compile
 
-2. **Compile o projeto**
-```bash
-mvn clean install
-```
+# 2. Executar testes
+mvn test
 
-3. **Execute a aplicação**
-```bash
+# 3. Rodar aplicação
 mvn spring-boot:run
+
+# 4. Acessar aplicação
+# API: http://localhost:8080
+# H2 Console: http://localhost:8080/h2-console
+# Swagger UI: http://localhost:8080/swagger-ui.html
 ```
 
-4. **Acesse a API**
+## 🔄 **Integração com cochitoServicoApi (Feature 02)**
+
+### **Fluxo de Comunicação:**
 ```
-http://localhost:8080/api
-```
-
-5. **Acesse o Console H2** (Para visualizar o banco)
-```
-http://localhost:8080/h2-console
-```
-
-## 📂 Arquivos de Dados
-
-O projeto utiliza arquivos texto para carga inicial dos dados:
-
-- `funcionario.txt` - Dados dos funcionários e endereços
-- `cliente.txt` - Dados dos clientes
-- `servico.txt` - Dados dos serviços
-
-### Formato dos arquivos:
-
-**funcionario.txt:**
-```
-Nome;Email;CPF;Telefone;Matricula;Salario;EhAtivo;CEP;Logradouro;Complemento;Unidade;Bairro;Localidade;UF;Estado
+cochitoApi (porta 8080) → cochitoServicoApi (porta 8081) → APIs Externas
+       ↓                           ↓                           ↓
+OrdemServicoService      DistanciaService           AwesomeAPI + OpenRoute
+       ↓                           ↓                           ↓
+Enriquece resposta    Calcula distância real      Coordenadas + Rota
 ```
 
-**cliente.txt:**
-```
-Nome;CPF;Email;Telefone;Fidelidade
-```
-
-**servico.txt:**
-```
-Titulo;Preco;Descricao
+### **Dependências Adicionadas:**
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-openfeign</artifactId>
+</dependency>
 ```
 
-## 🧪 Testando a API
-
-Recomenda-se o uso do **Postman** para testar os endpoints da API. 
-
-### Exemplo de teste POST (Funcionário com Validação):
-```http
-POST http://localhost:8080/api/funcionarios
-Content-Type: application/json
-
-{
-    "nome": "João Silva",
-    "cpf": "123.456.789-00",
-    "email": "joao@email.com",
-    "telefone": "(11) 99999-9999",
-    "matricula": 12345,
-    "salario": 5000.00,
-    "ativo": true,
-    "endereco": {
-        "cep": "01234-567",
-        "logradouro": "Rua das Flores",
-        "bairro": "Centro",
-        "localidade": "São Paulo",
-        "uf": "SP",
-        "estado": "São Paulo"
+### **Habilitação do Feign:**
+```java
+@SpringBootApplication
+@EnableFeignClients
+public class CochitoapiApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(CochitoapiApplication.class, args);
     }
 }
 ```
 
-### Exemplo de resposta de erro de validação:
-```json
-{
-    "success": false,
-    "status": 400,
-    "code": "VALIDATION_ERROR",
-    "message": "Dados inválidos fornecidos",
-    "path": "/api/funcionarios",
-    "timestamp": "2025-01-XX...",
-    "validationErrors": [
-        {
-            "field": "cpf",
-            "rejectedValue": "123456789",
-            "message": "CPF deve estar no formato XXX.XXX.XXX-XX"
-        }
-    ]
-}
-```
+## 📈 **Funcionalidades por Feature**
 
-## 🏛️ Padrões e Boas Práticas Implementadas
+### ✅ **Feature 1**: Sistema Base (Completa)
+- CRUD completo para todas as entidades
+- Validações robustas com Bean Validation
+- Relacionamentos JPA configurados
+- Exception handling global
 
-- **Arquitetura em Camadas**: Controller, Service, Repository bem definidas
-- **Injeção de Dependência**: Uso de injeção por construtor
-- **Tratamento de Exceções**: GlobalExceptionHandler centralizado
-- **Interface Genérica**: `CrudService<T,ID>` para padronização
-- **Bean Validation**: Validações declarativas com annotations
-- **JPA/Hibernate**: Mapeamento objeto-relacional automático
-- **Response Entity**: Controle granular de respostas HTTP com códigos apropriados
-- **Estratégia de Herança**: @MappedSuperclass para Pessoa
-- **Relacionamentos JPA**: @ManyToOne com cascade configurado
-- **Transacional**: @Transactional para operações que modificam dados
-- **Validação em Cascata**: @Valid para objetos relacionados
+### ✅ **Feature 2**: Integração Externa (🆕 Implementada)
+- Cliente Feign para cochitoServicoApi
+- Enriquecimento automático de OrdemServico
+- Endpoint dedicado para consulta de distância
+- Tratamento de erros e fallback
 
-## 📊 Status Final das Features
+### ✅ **Feature 3**: Busca por CEP via IBGE (Completa)
+- Integração com API pública do IBGE
+- Busca de localidades por CEP
+- Preenchimento automático de endereços
 
-| Feature | Status | Entregáveis | Progresso |
-|---------|---------|-------------|-----------|
-| **Feature 1** | ✅ **Concluída** | Configuração base + CRUD simples | 100% |
-| **Feature 2** | ✅ **Concluída** | Modelo expandido + CRUD completo | 100% |
-| **Feature 3** | ✅ **Concluída** | Persistência JPA + API refinada | 100% |
-| **Feature 4** | ✅ **Concluída** | Validação avançada + Tratamento global | 100% |
+### ✅ **Feature 4**: Query Methods (Completa)
+- Métodos de consulta customizados
+- Filtros por status, cliente, funcionário
+- Consultas por período e contadores
+- Busca textual em campos específicos
 
-### 🎯 Projeto 100% Implementado ✅
+## 🎯 **Benefícios da Feature 02**
 
-**Todas as funcionalidades foram entregues com sucesso:**
+### **Para o Negócio:**
+- **Cálculo automático** de distância funcionário-cliente
+- **Otimização de deslocamentos** e custos operacionais  
+- **Informações precisas** para planejamento de rotas
+- **Integração transparente** sem impacto na UX
 
-#### ✅ Arquitetura Completa
-- **Persistência Real**: H2 Database com JPA/Hibernate
-- **Validação Robusta**: Bean Validation em todas as entidades
-- **Tratamento de Erros**: GlobalExceptionHandler com respostas estruturadas
-- **API RESTful**: Endpoints completos com códigos HTTP apropriados
+### **Para Desenvolvimento:**
+- **Comunicação entre microserviços** via Feign
+- **Enriquecimento não-intrusivo** de dados
+- **Arquitetura distribuída** preparada para escala
+- **Padrões de integração** bem estabelecidos
 
-#### ✅ Modelo de Domínio Robusto
-- **Herança**: Pessoa como @MappedSuperclass
-- **Relacionamentos**: @ManyToOne entre Funcionario e Endereco
-- **Entidades Completas**: Funcionario, Cliente, Servico, Endereco
-- **Validações**: Todas as regras de negócio implementadas
-
-#### ✅ Funcionalidades Avançadas
-- **CRUD Completo**: Create, Read, Update, Delete para todas as entidades
-- **Operações Especiais**: inativar(), atualizarFidelidade()
-- **Carga de Dados**: Loaders automáticos a partir de arquivos texto
-- **Console H2**: Interface para visualização dos dados
-
-## 🎓 Conceitos Aplicados - Aprendizado Consolidado
-
-Este projeto demonstra o domínio completo dos seguintes conceitos:
-
-### **Fundamentos Spring Boot**
-- Configuração de projeto com Spring Initializr
-- Injeção de Dependência e Inversão de Controle
-- Componentes (@Component, @Service, @Repository, @RestController)
-- ApplicationRunner para inicialização de dados
-
-### **Arquitetura e Design Patterns**
-- Padrão MVC (Model-View-Controller)
-- Separação de responsabilidades em camadas
-- Interface CrudService genérica para padronização
-- Tratamento centralizado de exceções
-
-### **Orientação a Objetos**
-- Herança: classe abstrata Pessoa
-- Polimorfismo: método abstrato obterTipo()
-- Encapsulamento: getters/setters
-- Associação: relacionamento entre classes
-
-### **Persistência e Banco de Dados**
-- Spring Data JPA e Hibernate
-- Mapeamento objeto-relacional com annotations
-- Estratégias de herança (@MappedSuperclass)
-- Relacionamentos (@ManyToOne, cascade)
-- H2 Database em memória
-
-### **Validação e Tratamento de Erros**
-- Bean Validation (@NotNull, @NotBlank, @Size, @Pattern, @Email, @Min)
-- Exceções customizadas (RecursoInvalidoException, RecursoNaoEncontradoException)
-- GlobalExceptionHandler com @ControllerAdvice
-- ResponseEntity com códigos HTTP apropriados
-
-### **API RESTful**
-- Verbos HTTP (GET, POST, PUT, PATCH, DELETE)
-- @PathVariable e @RequestBody
-- Códigos de status HTTP (200, 201, 204, 400, 404)
-- Estrutura de respostas JSON padronizada
+### **Para Qualidade:**
+- **Separação de responsabilidades** entre projetos
+- **Fallback e tratamento de erros** robusto
+- **Configuração externa** para ambientes
+- **Baixo acoplamento** entre sistemas
 
 ---
 
-## 👨‍💻 Conclusão do Projeto
+## 📄 Licença
 
-Este projeto foi desenvolvido com sucesso seguindo metodologia ágil com entregas incrementais por features. **Todas as 4 features foram implementadas completamente**, demonstrando o domínio dos conceitos de desenvolvimento avançado com Spring Boot.
-
-**Principais conquistas:**
-- ✅ Arquitetura sólida e bem estruturada
-- ✅ Persistência real com banco de dados
-- ✅ Validações robustas e tratamento de erros
-- ✅ API RESTful completa e funcional
-- ✅ Aplicação das melhores práticas de desenvolvimento
-
-**Projeto desenvolvido como parte do curso de Pós-graduação MIT em Engenharia de Software - Instituto INFNET.**
+Este projeto é desenvolvido para fins acadêmicos como parte do curso de Engenharia de Software com foco em metodologias ágeis e boas práticas de desenvolvimento.
 
 ---
 
-**Status Final**: 🎉 **PROJETO 100% CONCLUÍDO** - Todas as Features Implementadas com Sucesso!
+**🎯 Projeto atualizado com integração completa entre microserviços, demonstrando comunicação eficiente via OpenFeign e enriquecimento automático de dados.**
